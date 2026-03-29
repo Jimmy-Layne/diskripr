@@ -1,0 +1,96 @@
+{
+    "streams": [
+        {
+            "index": 0,
+            "codec_name": "mpeg2video",
+            "codec_long_name": "MPEG-2 video",
+            "profile": "Main",
+            "codec_type": "video",
+            "width": 720,
+            "height": 480,
+            "r_frame_rate": "30000/1001",
+            "avg_frame_rate": "30000/1001",
+            "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0
+            },
+            "tags": {
+                "language": "eng",
+                "BPS-eng": "4252032",
+                "DURATION-eng": "00:00:32.899533333",
+                "NUMBER_OF_FRAMES-eng": "986",
+                "NUMBER_OF_BYTES-eng": "17485952",
+                "SOURCE_ID-eng": "0100E0",
+                "_STATISTICS_WRITING_APP-eng": "MakeMKV v1.18.3 linux(x64-release)"
+            }
+        },
+        {
+            "index": 1,
+            "codec_name": "ac3",
+            "codec_long_name": "ATSC A/52A (AC-3)",
+            "codec_type": "audio",
+            "sample_rate": "48000",
+            "channels": 6,
+            "channel_layout": "5.1(side)",
+            "bit_rate": "448000",
+            "disposition": {
+                "default": 1,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 0,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0
+            },
+            "tags": {
+                "language": "eng",
+                "title": "Surround 5.1",
+                "BPS-eng": "448000",
+                "DURATION-eng": "00:00:32.896000000",
+                "NUMBER_OF_FRAMES-eng": "1028",
+                "NUMBER_OF_BYTES-eng": "1842176",
+                "SOURCE_ID-eng": "0180BD",
+                "_STATISTICS_WRITING_APP-eng": "MakeMKV v1.18.3 linux(x64-release)"
+            }
+        },
+        {
+            "index": 2,
+            "codec_name": "dvd_subtitle",
+            "codec_long_name": "DVD subtitles",
+            "codec_type": "subtitle",
+            "disposition": {
+                "default": 0,
+                "dub": 0,
+                "original": 0,
+                "comment": 0,
+                "lyrics": 0,
+                "karaoke": 0,
+                "forced": 1,
+                "hearing_impaired": 0,
+                "visual_impaired": 0,
+                "clean_effects": 0,
+                "attached_pic": 0,
+                "timed_thumbnails": 0
+            },
+            "tags": {
+                "language": "eng",
+                "title": "English (Forced)"
+            }
+        }
+    ]
+}

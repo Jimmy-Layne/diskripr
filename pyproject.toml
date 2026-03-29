@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "diskripr"
+version = "0.1.0"
+description = "DVD ripping CLI for producing Jellyfin-compatible MKV files"
+requires-python = ">=3.11"
+dependencies = ["click"]
+
+[project.scripts]
+diskripr = "diskripr.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov", "tox", "pylint", "flake8"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/diskripr"]

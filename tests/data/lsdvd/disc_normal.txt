@@ -1,0 +1,42 @@
+Disc Title: ROSENCRANTZ_AND_GUILDENSTERN
+Title: 01, Length: 01:57:30.166 Chapters: 13, Cells: 13, Audio streams: 03, Subpictures: 00
+	VTS: 01, TTN: 01, FPS: 29.97, Format: NTSC, Aspect ratio: 16/9, Width: 720, Height: 480, DF: Letterbox
+	Palette: 108080 2b8080 eb8080 51ef5a 7d8080 b48080 a910a5 6addca d29210 1c76b8 50505a 30b86d 5d4792 3dafa5 718947 eb8080 
+	Number of Angles: 1
+	Audio: 1, Language: en - English, Format: ac3, Frequency: 48000, Quantization: drc, Channels: 6, AP: 0, Content: Undefined, Stream id: 0x80
+	Audio: 2, Language: en - English, Format: ac3, Frequency: 48000, Quantization: drc, Channels: 2, AP: 0, Content: Undefined, Stream id: 0x81
+	Audio: 3, Language: en - English, Format: dts, Frequency: 48000, Quantization: drc, Channels: 5, AP: 0, Content: Undefined, Stream id: 0x8a
+	Chapter: 01, Length: 00:13:09.533, Start Cell: 01
+	Chapter: 02, Length: 00:07:58.367, Start Cell: 02
+	Chapter: 03, Length: 00:07:55.734, Start Cell: 03
+	Chapter: 04, Length: 00:08:30.233, Start Cell: 04
+	Chapter: 05, Length: 00:08:03.734, Start Cell: 05
+	Chapter: 06, Length: 00:11:55.367, Start Cell: 06
+	Chapter: 07, Length: 00:10:14.734, Start Cell: 07
+	Chapter: 08, Length: 00:09:49.000, Start Cell: 08
+	Chapter: 09, Length: 00:07:11.367, Start Cell: 09
+	Chapter: 10, Length: 00:10:41.066, Start Cell: 10
+	Chapter: 11, Length: 00:08:58.367, Start Cell: 11
+	Chapter: 12, Length: 00:09:52.367, Start Cell: 12
+	Chapter: 13, Length: 00:03:10.166, Start Cell: 13
+	Cell: 01, Length: 00:13:09.533
+	Cell: 02, Length: 00:07:58.367
+	Cell: 03, Length: 00:07:55.734
+	Cell: 04, Length: 00:08:30.233
+	Cell: 05, Length: 00:08:03.734
+	Cell: 06, Length: 00:11:55.367
+	Cell: 07, Length: 00:10:14.734
+	Cell: 08, Length: 00:09:49.000
+	Cell: 09, Length: 00:07:11.367
+	Cell: 10, Length: 00:10:41.066
+	Cell: 11, Length: 00:08:58.367
+	Cell: 12, Length: 00:09:52.367
+	Cell: 13, Length: 00:03:10.166
+Title: 02, Length: 00:00:32.867 Chapters: 01, Cells: 01, Audio streams: 01, Subpictures: 00
+	VTS: 02, TTN: 01, FPS: 29.97, Format: NTSC, Aspect ratio: 16/9, Width: 720, Height: 480, DF: Letterbox
+	Palette: 108080 2b8080 eb8080 51ef5a 7d8080 b48080 a910a5 6addca d29210 1c76b8 50505a 30b86d 5d4792 3dafa5 718947 eb8080 
+	Number of Angles: 1
+	Audio: 1, Language: en - English, Format: ac3, Frequency: 48000, Quantization: drc, Channels: 6, AP: 0, Content: Undefined, Stream id: 0x80
+	Chapter: 01, Length: 00:00:32.867, Start Cell: 01
+	Cell: 01, Length: 00:00:32.867
+Longest track: 01

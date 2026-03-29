@@ -1,0 +1,268 @@
+[21:22:03] Compile-time hardening features are enabled
+Cannot load libnvidia-encode.so.1
+[21:22:03] qsv: not available on this system
+[21:22:03] hb_init: starting libhb thread
+[21:22:03] thread 715b090d46c0 started ("libhb")
+HandBrake 1.7.2 (2024040100) - Linux x86_64 - https://handbrake.fr
+4 CPUs detected
+Opening /home/sweeps/test_data/A1_t01.mkv...
+[21:22:03] CPU: Intel(R) Core(TM) i5-7500T CPU @ 2.70GHz
+[21:22:03]  - Intel microarchitecture Kaby Lake
+[21:22:03]  - logical processor count: 4
+[21:22:03] Intel Quick Sync Video support: no
+[21:22:03] hb_scan: path=/home/sweeps/test_data/A1_t01.mkv, title_index=1
+Input #0, matroska,webm, from '/home/sweeps/test_data/A1_t01.mkv':
+  Metadata:
+    encoder         : libmakemkv v1.18.3 (1.3.10/1.5.2) x86_64-linux-gnu
+    creation_time   : 2026-03-29T04:20:21.000000Z
+  Duration: 00:00:32.90, start: 0.000000, bitrate: 4706 kb/s
+  Stream #0:0(eng): Video: mpeg2video (Main), yuv420p(tv, top first), 720x480 [SAR 32:27 DAR 16:9], SAR 853:720 DAR 853:480, 29.97 fps, 29.97 tbr, 1k tbn
+    Metadata:
+      BPS-eng         : 4252032
+      DURATION-eng    : 00:00:32.899533333
+      NUMBER_OF_FRAMES-eng: 986
+      NUMBER_OF_BYTES-eng: 17485952
+      SOURCE_ID-eng   : 0100E0
+      _STATISTICS_WRITING_APP-eng: MakeMKV v1.18.3 linux(x64-release)
+      _STATISTICS_WRITING_DATE_UTC-eng: 2026-03-29 04:20:21
+      _STATISTICS_TAGS-eng: BPS DURATION NUMBER_OF_FRAMES NUMBER_OF_BYTES SOURCE_ID
+    Side data:
+      cpb: bitrate max/min/avg: 8200000/0/0 buffer size: 1835008 vbv_delay: N/A
+  Stream #0:1(eng): Audio: ac3, 48000 Hz, 5.1(side), fltp, 448 kb/s (default)
+    Metadata:
+      title           : Surround 5.1
+      BPS-eng         : 448000
+      DURATION-eng    : 00:00:32.896000000
+      NUMBER_OF_FRAMES-eng: 1028
+      NUMBER_OF_BYTES-eng: 1842176
+      SOURCE_ID-eng   : 0180BD
+      _STATISTICS_WRITING_APP-eng: MakeMKV v1.18.3 linux(x64-release)
+      _STATISTICS_WRITING_DATE_UTC-eng: 2026-03-29 04:20:21
+      _STATISTICS_TAGS-eng: BPS DURATION NUMBER_OF_FRAMES NUMBER_OF_BYTES SOURCE_ID
+[21:22:03] scan: decoding previews for title 1
+[21:22:03] scan: audio 0x1: ac3, rate=48000Hz, bitrate=448000 English (AC3, 5.1 ch, 448 kbps)
+[21:22:03] WARNING: bitstream PAR 32:27 != container PAR 853:720
+[21:22:03] using bitstream PAR 32:27
+[21:22:03] scan: 10 previews, 720x480, 29.970 fps, autocrop = 74/80/128/116, aspect 16:9, PAR 32:27, color profile: 6-1-6, chroma location: left
+[21:22:03] libhb: scan thread found 1 valid title(s)
++ Using preset: CLI Default
++ title 1:
+  + stream: /home/sweeps/test_data/A1_t01.mkv
+  + duration: 00:00:32
+  + size: 720x480, pixel aspect: 32/27, display aspect: 1.78, 29.970 fps
+  + autocrop: 74/80/128/116
+  + chapters:
+    + 1: duration 00:00:32
+  + audio tracks:
+    + 1, English (AC3, 5.1 ch, 448 kbps) (iso639-2: eng), 48000Hz, 448000bps
+  + subtitle tracks:
+[21:22:03] Starting work at: Sat Mar 28 21:22:03 2026
+
+[21:22:03] 1 job(s) to process
+[21:22:03] json job:
+{
+    "Audio": {
+        "AudioList": [
+            {
+                "Bitrate": 128,
+                "CompressionLevel": -1.0,
+                "DRC": 0.0,
+                "DitherMethod": "auto",
+                "Encoder": 1327310848,
+                "Gain": 0.0,
+                "Mixdown": "dpl2",
+                "Name": "Surround 5.1",
+                "NormalizeMixLevel": false,
+                "PresetEncoder": "av_aac",
+                "Quality": -3.0,
+                "Samplerate": 0,
+                "Track": 0
+            }
+        ],
+        "CopyMask": [
+            "copy:aac",
+            "copy:ac3",
+            "copy:eac3",
+            "copy:dtshd",
+            "copy:dts",
+            "copy:mp3",
+            "copy:truehd",
+            "copy:flac"
+        ],
+        "FallbackEncoder": "av_aac"
+    },
+    "Destination": {
+        "AlignAVStart": false,
+        "ChapterList": [
+            {
+                "Duration": {
+                    "Hours": 0,
+                    "Minutes": 0,
+                    "Seconds": 32,
+                    "Ticks": 2960910
+                },
+                "Name": ""
+            }
+        ],
+        "ChapterMarkers": false,
+        "File": "/home/sweeps/test_data/encoded.mkv",
+        "InlineParameterSets": false,
+        "Mux": "mkv",
+        "Options": {
+            "IpodAtom": false,
+            "Optimize": true
+        }
+    },
+    "Filters": {
+        "FilterList": [
+            {
+                "ID": 10,
+                "Settings": {
+                    "mode": 0
+                }
+            },
+            {
+                "ID": 19,
+                "Settings": {
+                    "crop-bottom": 80,
+                    "crop-left": 128,
+                    "crop-right": 116,
+                    "crop-top": 74,
+                    "height": 326,
+                    "width": 476
+                }
+            }
+        ]
+    },
+    "Metadata": {},
+    "PAR": {
+        "Den": 27,
+        "Num": 32
+    },
+    "SequenceID": 0,
+    "Source": {
+        "Angle": 0,
+        "HWDecode": 0,
+        "Path": "/home/sweeps/test_data/A1_t01.mkv",
+        "Range": {
+            "End": 1,
+            "Start": 1,
+            "Type": "chapter"
+        },
+        "Title": 1
+    },
+    "Subtitle": {
+        "Search": {
+            "Burn": true,
+            "Default": false,
+            "Enable": false,
+            "Forced": false
+        },
+        "SubtitleList": []
+    },
+    "Video": {
+        "ChromaLocation": 1,
+        "ColorInputFormat": 0,
+        "ColorMatrix": 6,
+        "ColorOutputFormat": 0,
+        "ColorPrimaries": 6,
+        "ColorRange": 1,
+        "ColorTransfer": 1,
+        "Encoder": "x264",
+        "HardwareDecode": 0,
+        "Level": "auto",
+        "MultiPass": false,
+        "Options": "",
+        "Preset": "medium",
+        "Profile": "auto",
+        "QSV": {
+            "AdapterIndex": 0,
+            "AsyncDepth": 0,
+            "Decode": false
+        },
+        "Quality": 20.0,
+        "Tune": "",
+        "Turbo": false
+    }
+}
+[21:22:03] Starting Task: Encoding Pass
+[21:22:03] Auto Passthru: allowed codecs are AAC, AC3, E-AC3, TrueHD, DTS, DTS-HD, MP3, FLAC
+[21:22:03] Auto Passthru: fallback is AAC (avcodec)
+[21:22:03] Auto Passthru: using AC3 Passthru for track 1
+[21:22:03] job configuration:
+[21:22:03]  * source
+[21:22:03]    + /home/sweeps/test_data/A1_t01.mkv
+[21:22:03]    + title 1, chapter(s) 1 to 1
+[21:22:03]    + container: matroska,webm
+[21:22:03]    + data rate: 4706 kbps
+[21:22:03]  * destination
+[21:22:03]    + /home/sweeps/test_data/encoded.mkv
+[21:22:03]    + container: Matroska (libavformat)
+[21:22:03]  * video track
+[21:22:03]    + decoder: mpeg2video 8-bit (yuv420p)
+[21:22:03]    + filters
+[21:22:03]      + Framerate Shaper (mode=0)
+[21:22:03]        + frame rate: same as source (around 29.970 fps)
+[21:22:03]      + Crop and Scale (width=476:height=326:crop-top=74:crop-bottom=80:crop-left=128:crop-right=116)
+[21:22:03]        + source: 720 * 480, crop (74/80/128/116): 476 * 326, scale: 476 * 326
+[21:22:03]    + Output geometry
+[21:22:03]      + storage dimensions: 476 x 326
+[21:22:03]      + pixel aspect ratio: 32 : 27
+[21:22:03]      + display dimensions: 564 x 326
+[21:22:03]    + encoder: H.264 (libx264)
+[21:22:03]      + preset:  medium
+[21:22:03]      + profile: auto
+[21:22:03]      + level:   auto
+[21:22:03]      + quality: 20.00 (RF)
+[21:22:03]      + color profile: 6-1-6
+[21:22:03]      + chroma location: left
+[21:22:03]  * audio track 1
+[21:22:03]    + name: Surround 5.1
+[21:22:03]    + decoder: English (AC3, 5.1 ch, 448 kbps) (track 1, id 0x1)
+[21:22:03]      + bitrate: 448 kbps, samplerate: 48000 Hz
+[21:22:03]    + AC3 Passthru
+[21:22:03] sync: expecting 985 video frames
+[21:22:03] encx264: min-keyint: 30, keyint: 300
+[21:22:03] encx264: encoding at constant RF 20.000000
+x264 [info]: using SAR=32/27
+x264 [info]: using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+x264 [info]: profile High, level 2.1, 4:2:0, 8-bit
+[21:22:03] sync: first pts video is 0
+[21:22:03] sync: first pts audio 0x1 is 0
+[21:22:03] sync: Chapter 1 at frame 3 time 6006
+Encoding: task 1 of 1, 20.00 %Encoding: task 1 of 1, 43.15 %Encoding: task 1 of 1, 65.28 %Encoding: task 1 of 1, 84.26 %[21:22:04] reader: done. 1 scr changes
+[21:22:04] work: average encoding speed for job is 0.000000 fps
+Encoding: task 1 of 1, 100.00 %[21:22:04] vfr: 986 frames output, 0 dropped
+[21:22:04] vfr: lost time: 0 (0 frames)
+[21:22:04] vfr: gained time: 0 (0 frames) (0 not accounted for)
+[21:22:04] ac3-decoder done: 1028 frames, 0 decoder errors
+[21:22:04] mpeg2video-decoder done: 986 frames, 0 decoder errors
+[21:22:04] sync: got 986 frames, 985 expected
+[21:22:04] sync: framerate min 29.970 fps, max 29.970 fps, avg 29.970 fps
+x264 [info]: frame I:6     Avg QP:11.83  size: 12170
+x264 [info]: frame P:301   Avg QP:15.60  size:   941
+x264 [info]: frame B:679   Avg QP:16.98  size:   108
+x264 [info]: consecutive B-frames:  5.0%  6.1% 10.6% 78.3%
+x264 [info]: mb I  I16..4: 47.8% 33.6% 18.7%
+x264 [info]: mb P  I16..4:  0.6%  1.5%  0.5%  P16..4: 10.1%  3.0%  1.9%  0.0%  0.0%    skip:82.4%
+x264 [info]: mb B  I16..4:  0.0%  0.0%  0.0%  B16..8:  5.4%  0.5%  0.1%  direct: 0.3%  skip:93.7%  L0:38.6% L1:53.5% BI: 7.9%
+x264 [info]: 8x8 transform intra:47.4% inter:70.0%
+x264 [info]: coded y,uvDC,uvAC intra: 35.5% 41.7% 29.0% inter: 1.8% 2.1% 0.3%
+x264 [info]: i16 v,h,dc,p: 65% 17%  8% 11%
+x264 [info]: i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 27% 22% 33%  2%  2%  2%  7%  2%  3%
+x264 [info]: i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 31% 30% 14%  3%  4%  6%  5%  3%  4%
+x264 [info]: i8c dc,h,v,p: 64% 20% 11%  5%
+x264 [info]: Weighted P-Frames: Y:8.0% UV:5.0%
+x264 [info]: ref P L0: 76.5%  8.4% 12.0%  3.0%  0.1%
+x264 [info]: ref B L0: 89.5%  9.3%  1.2%
+x264 [info]: ref B L1: 97.4%  2.6%
+x264 [info]: kb/s:104.42
+[21:22:05] mux: track 0, 986 frames, 429149 bytes, 104.25 kbps, fifo 1024
+[21:22:05] mux: track 1, 1028 frames, 1842176 bytes, 447.50 kbps, fifo 2048
+[21:22:05] Finished work at: Sat Mar 28 21:22:05 2026
+
+[21:22:05] libhb: work result = 0
+
+Encode done!
+HandBrake has exited.
+

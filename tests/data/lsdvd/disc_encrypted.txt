@@ -1,0 +1,4 @@
+libdvdread: Can't read file VIDEO_TS/VIDEO_TS.IFO
+libdvdread: Can't read file VIDEO_TS/VTS_01_0.IFO
+libdvdread: Can't read file VIDEO_TS/VTS_02_0.IFO
+libdvdread: Can't read file VIDEO_TS/VTS_03_0.IFO
