@@ -44,8 +44,8 @@ from typing import ClassVar, Optional
 
 log = logging.getLogger(__name__)
 
-# Default timeout (seconds) for non-streaming invocations.
-DEFAULT_TIMEOUT = 60
+#: Default timeout in seconds for non-streaming subprocess invocations.
+DEFAULT_TIMEOUT: int = 60
 
 
 # ---------------------------------------------------------------------------
@@ -167,7 +167,7 @@ class BaseDriver:
         Args:
             args:    Full command and argument list.
             timeout: Seconds before the subprocess is killed on timeout.
-                     Defaults to :data:`DEFAULT_TIMEOUT`.
+                     Defaults to :data:`diskripr.drivers.base.DEFAULT_TIMEOUT`.
 
         Raises:
             ToolError: The process exited with a non-zero return code.

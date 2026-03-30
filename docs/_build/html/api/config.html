@@ -1,0 +1,305 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration &mdash; diskripr 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Models" href="models.html" />
+    <link rel="prev" title="CLI Reference" href="cli.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            diskripr
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guide/index.html">User Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Concepts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cli.html">CLI Reference</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#diskripr.config.ConfigError"><code class="docutils literal notranslate"><span class="pre">ConfigError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#diskripr.config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.config.Config.movie_name"><code class="docutils literal notranslate"><span class="pre">Config.movie_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.config.Config.movie_year"><code class="docutils literal notranslate"><span class="pre">Config.movie_year</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.config.Config.output_dir"><code class="docutils literal notranslate"><span class="pre">Config.output_dir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.config.Config.temp_dir"><code class="docutils literal notranslate"><span class="pre">Config.temp_dir</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.config.Config.device"><code class="docutils literal notranslate"><span class="pre">Config.device</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.config.Config.disc_number"><code class="docutils literal notranslate"><span class="pre">Config.disc_number</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.config.Config.media_type"><code class="docutils literal notranslate"><span class="pre">Config.media_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.config.Config.rip_mode"><code class="docutils literal notranslate"><span class="pre">Config.rip_mode</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.config.Config.encode_format"><code class="docutils literal notranslate"><span class="pre">Config.encode_format</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.config.Config.quality"><code class="docutils literal notranslate"><span class="pre">Config.quality</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.config.Config.min_length"><code class="docutils literal notranslate"><span class="pre">Config.min_length</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.config.Config.keep_original"><code class="docutils literal notranslate"><span class="pre">Config.keep_original</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.config.Config.eject_on_complete"><code class="docutils literal notranslate"><span class="pre">Config.eject_on_complete</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.config.Config.validate"><code class="docutils literal notranslate"><span class="pre">Config.validate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.config.Config.from_click_params"><code class="docutils literal notranslate"><span class="pre">Config.from_click_params()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="drivers.html">Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="util.html">Utilities</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">diskripr</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Configuration</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/config.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-diskripr.config">
+<span id="configuration"></span><h1>Configuration<a class="headerlink" href="#module-diskripr.config" title="Link to this heading"></a></h1>
+<p>Runtime configuration for the diskripr pipeline.</p>
+<p>Provides the <code class="docutils literal notranslate"><span class="pre">Config</span></code> dataclass, which holds all parameters that control
+pipeline behaviour:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">output_dir</span></code>        — Base output directory (default: <code class="docutils literal notranslate"><span class="pre">./dvd_output</span></code>).</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">temp_dir</span></code>          — Temporary working directory for ripped files;</dt><dd><p>defaults to <code class="docutils literal notranslate"><span class="pre">&lt;output_dir&gt;/.tmp</span></code>. Can be overridden
+via the <code class="docutils literal notranslate"><span class="pre">DISKRIPR_TEMP_DIR</span></code> environment variable.</p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">device</span></code>            — Optical drive block device path (default: <code class="docutils literal notranslate"><span class="pre">/dev/sr0</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">movie_name</span></code>        — Movie title for Jellyfin naming (required).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">movie_year</span></code>        — Release year for Jellyfin naming (required).</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">disc_number</span></code>       — Disc number for multi-disc movies; <code class="docutils literal notranslate"><span class="pre">None</span></code> for</dt><dd><p>single-disc behaviour.</p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">media_type</span></code>        — Media type; only <code class="docutils literal notranslate"><span class="pre">&quot;movie&quot;</span></code> is supported in v1.</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">rip_mode</span></code>          — Title selection mode: <code class="docutils literal notranslate"><span class="pre">&quot;main&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;all&quot;</span></code>, or</dt><dd><p><code class="docutils literal notranslate"><span class="pre">&quot;ask&quot;</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">encode_format</span></code>     — Encoding format: <code class="docutils literal notranslate"><span class="pre">&quot;h264&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;h265&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;none&quot;</span></code>,</dt><dd><p>or <code class="docutils literal notranslate"><span class="pre">&quot;ask&quot;</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">quality</span></code>           — HandBrake RF quality value (default: 20 for h264,</dt><dd><p>22 for h265).</p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min_length</span></code>        — Minimum title duration in seconds (default: 30).</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">keep_original</span></code>     — Retain pre-encode MKVs in an <code class="docutils literal notranslate"><span class="pre">originals/</span></code></dt><dd><p>subdirectory (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">eject_on_complete</span></code> — Eject disc when the pipeline finishes</dt><dd><p>(default: <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Also exposes a <code class="docutils literal notranslate"><span class="pre">validate()</span></code> method that checks for impossible combinations
+(e.g. encoding requested but HandBrakeCLI absent) and a factory classmethod
+for constructing a <code class="docutils literal notranslate"><span class="pre">Config</span></code> from Click parameter values.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="diskripr.config.ConfigError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">diskripr.config.</span></span><span class="sig-name descname"><span class="pre">ConfigError</span></span><a class="reference internal" href="../_modules/diskripr/config.html#ConfigError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.config.ConfigError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></a></p>
+<p>Raised by <code class="docutils literal notranslate"><span class="pre">Config.validate()</span></code> for invalid or impossible configurations.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="diskripr.config.Config">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">diskripr.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">movie_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">movie_year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">temp_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/dev/sr0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disc_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">media_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'movie'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'movie'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rip_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal['main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ask']</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encode_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal['h264'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'h265'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'ask']</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quality</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_original</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eject_on_complete</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diskripr/config.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.config.Config" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>All parameters that control a single diskripr pipeline run.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.config.Config.movie_name">
+<span class="sig-name descname"><span class="pre">movie_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#diskripr.config.Config.movie_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.config.Config.movie_year">
+<span class="sig-name descname"><span class="pre">movie_year</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#diskripr.config.Config.movie_year" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.config.Config.output_dir">
+<span class="sig-name descname"><span class="pre">output_dir</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span><a class="headerlink" href="#diskripr.config.Config.output_dir" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.config.Config.temp_dir">
+<span class="sig-name descname"><span class="pre">temp_dir</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#diskripr.config.Config.temp_dir" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.config.Config.device">
+<span class="sig-name descname"><span class="pre">device</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/dev/sr0'</span></span><a class="headerlink" href="#diskripr.config.Config.device" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.config.Config.disc_number">
+<span class="sig-name descname"><span class="pre">disc_number</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#diskripr.config.Config.disc_number" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.config.Config.media_type">
+<span class="sig-name descname"><span class="pre">media_type</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'movie'</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'movie'</span></span><a class="headerlink" href="#diskripr.config.Config.media_type" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.config.Config.rip_mode">
+<span class="sig-name descname"><span class="pre">rip_mode</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'main'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'all'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'ask'</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'main'</span></span><a class="headerlink" href="#diskripr.config.Config.rip_mode" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.config.Config.encode_format">
+<span class="sig-name descname"><span class="pre">encode_format</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'h264'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'h265'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'none'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'ask'</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'none'</span></span><a class="headerlink" href="#diskripr.config.Config.encode_format" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.config.Config.quality">
+<span class="sig-name descname"><span class="pre">quality</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#diskripr.config.Config.quality" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.config.Config.min_length">
+<span class="sig-name descname"><span class="pre">min_length</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">30</span></span><a class="headerlink" href="#diskripr.config.Config.min_length" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.config.Config.keep_original">
+<span class="sig-name descname"><span class="pre">keep_original</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#diskripr.config.Config.keep_original" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.config.Config.eject_on_complete">
+<span class="sig-name descname"><span class="pre">eject_on_complete</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#diskripr.config.Config.eject_on_complete" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="diskripr.config.Config.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/diskripr/config.html#Config.validate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.config.Config.validate" title="Link to this definition"></a></dt>
+<dd><p>Raise <code class="docutils literal notranslate"><span class="pre">ConfigError</span></code> if the configuration is invalid or impossible.</p>
+<p>Checks performed:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">movie_name</span></code> must not be blank.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">movie_year</span></code> must be in the range 1888–2099.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">disc_number</span></code> must be &gt;= 1 when set.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">min_length</span></code> must be &gt; 0.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">quality</span></code> must be in 0–51 when encoding is requested.</p></li>
+<li><p>HandBrakeCLI must be on PATH when <code class="docutils literal notranslate"><span class="pre">encode_format</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;h264&quot;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&quot;h265&quot;</span></code>.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="diskripr.config.Config.from_click_params">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_click_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">movie_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">movie_year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'/dev/sr0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disc_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rip_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'main'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'all'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'ask'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encode_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'h264'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'h265'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'none'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'ask'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'none'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quality</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_original</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eject_on_complete</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#diskripr.config.Config" title="diskripr.config.Config"><span class="pre">Config</span></a></span></span><a class="reference internal" href="../_modules/diskripr/config.html#Config.from_click_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.config.Config.from_click_params" title="Link to this definition"></a></dt>
+<dd><p>Construct a <code class="docutils literal notranslate"><span class="pre">Config</span></code> from Click CLI parameter values.</p>
+<p>Reads <code class="docutils literal notranslate"><span class="pre">DISKRIPR_TEMP_DIR</span></code> from the environment (handled in
+<code class="docutils literal notranslate"><span class="pre">__post_init__</span></code>). All parameters map 1-to-1 to Click options of the
+same name.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cli.html" class="btn btn-neutral float-left" title="CLI Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="models.html" class="btn btn-neutral float-right" title="Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

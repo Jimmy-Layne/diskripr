@@ -13,7 +13,17 @@ dependencies = ["click"]
 diskripr = "diskripr.cli:main"
 
 [project.optional-dependencies]
-dev = ["pytest", "pytest-cov", "tox", "pylint", "flake8"]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "tox",
+    "pylint",
+    "flake8",
+    "sphinx",
+    "sphinx-click",
+    "myst-parser",
+    "sphinx-rtd-theme",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/diskripr"]

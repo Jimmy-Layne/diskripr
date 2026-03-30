@@ -2,22 +2,17 @@
 
 Exposes one method on :class:`HandBrakeDriver`:
 
-- ``encode(title_index, input_path, output_path, encoder, quality, on_progress)``
-    Build and execute a ``HandBrakeCLI`` command with the following fixed
-    requirements:
-    - Copy all audio tracks without re-encoding (``--all-audio --aencoder copy``).
-    - Preserve all subtitle tracks without burning in
-      (``--all-subtitles --subtitle-burned=none``).
-    - Preserve chapter markers (``--markers``).
-    - Optimize for streaming (``--optimize``).
-    - Quality (RF value) is configurable.
-    Stream progress output and invoke ``on_progress`` callbacks. Return an
-    ``EncodeResult`` including before/after file sizes.
+``encode(title_index, input_path, output_path, encoder, quality, on_progress)``
+    Builds and executes a ``HandBrakeCLI`` command with fixed requirements:
+    copy all audio tracks, preserve all subtitles without burning in, keep
+    chapter markers, optimize for streaming, and apply a configurable RF
+    quality value. Streams progress output and invokes ``on_progress``
+    callbacks. Returns an ``EncodeResult`` including before/after file sizes.
 
 Raises ``ToolNotFound`` if ``HandBrakeCLI`` is not found on PATH. The pipeline
 catches this to skip encoding gracefully rather than aborting.
 
-On encoding failure, raise ``EncodeError`` so the pipeline can fall back to
+On encoding failure, raises ``EncodeError`` so the pipeline can fall back to
 the original MKV and log a warning.
 """
 

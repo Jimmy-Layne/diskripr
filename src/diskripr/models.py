@@ -7,7 +7,7 @@ code that has already validated tool output during parsing. Occasional
 Defined types:
 
 - ``DriveInfo``         — Optical drive device path and MakeMKV drive index.
-- ``DiscInfo``          — Drive info plus the disc title string.
+- ``DiscInfo``          — Drive info, disc title string, and title list.
 - ``Title``             — Per-title metadata from a MakeMKV scan: index, name,
                           duration (HH:MM:SS), size in bytes, chapter count,
                           stream summary, and a heuristic type tag
@@ -73,6 +73,7 @@ class DiscInfo:
 
     drive: DriveInfo
     disc_title: str
+    titles: list[Title] = field(default_factory=list)
 
 
 @dataclass

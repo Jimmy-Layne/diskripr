@@ -36,6 +36,9 @@ All operations use ``pathlib.Path``. Functions:
 - ``cleanup(temp_dir)``
     Remove the temporary working directory and all its contents.
 
+- ``eject_disc(device)``
+    Eject the disc at *device* via the ``eject`` shell command. Non-fatal.
+
 - ``format_size(num_bytes)``
     Return a human-readable file size string (e.g. ``"4.7 GB"``).
 """
@@ -45,6 +48,7 @@ from __future__ import annotations
 import logging
 import re
 import shutil
+import subprocess
 from pathlib import Path
 from typing import Optional
 
@@ -178,6 +182,21 @@ def cleanup(temp_dir: Path) -> None:
     if temp_dir.exists():
         shutil.rmtree(temp_dir)
         log.debug("Removed temp dir %s", temp_dir)
+
+
+def eject_disc(device: str) -> None:
+    """Eject the disc at *device* using the ``eject`` shell command.
+
+    Non-fatal: logs a warning if ``eject`` is unavailable or the command fails
+    so that the pipeline can complete without raising.
+    """
+    try:
+        subprocess.run(["eject", device], check=True, capture_output=True)
+        log.debug("Ejected disc at %s", device)
+    except FileNotFoundError:
+        log.warning("'eject' command not found; disc not ejected from %s", device)
+    except subprocess.CalledProcessError as exc:
+        log.warning("Could not eject %s: %s", device, exc)
 
 
 def format_size(num_bytes: int) -> str:

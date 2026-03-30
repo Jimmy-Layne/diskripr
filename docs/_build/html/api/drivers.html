@@ -1,0 +1,767 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drivers &mdash; diskripr 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Utilities" href="util.html" />
+    <link rel="prev" title="Pipeline" href="pipeline.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            diskripr
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guide/index.html">User Guide</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Concepts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../concepts/index.html">Concepts</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cli.html">CLI Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Drivers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-diskripr.drivers.base">Base</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.drivers.base.DEFAULT_TIMEOUT"><code class="docutils literal notranslate"><span class="pre">DEFAULT_TIMEOUT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.drivers.base.ToolError"><code class="docutils literal notranslate"><span class="pre">ToolError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.drivers.base.ToolNotFound"><code class="docutils literal notranslate"><span class="pre">ToolNotFound</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.drivers.base.RipError"><code class="docutils literal notranslate"><span class="pre">RipError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.drivers.base.EncodeError"><code class="docutils literal notranslate"><span class="pre">EncodeError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.drivers.base.check_available"><code class="docutils literal notranslate"><span class="pre">check_available()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.drivers.base.BaseDriver"><code class="docutils literal notranslate"><span class="pre">BaseDriver</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-diskripr.drivers.makemkv">MakeMKV</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.drivers.makemkv.MakeMKVDriver"><code class="docutils literal notranslate"><span class="pre">MakeMKVDriver</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-diskripr.drivers.handbrake">HandBrake</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.drivers.handbrake.HandBrakeDriver"><code class="docutils literal notranslate"><span class="pre">HandBrakeDriver</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-diskripr.drivers.ffprobe">FFprobe</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.drivers.ffprobe.FfprobeDriver"><code class="docutils literal notranslate"><span class="pre">FfprobeDriver</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-diskripr.drivers.lsdvd">lsdvd</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.drivers.lsdvd.LsdvdTitle"><code class="docutils literal notranslate"><span class="pre">LsdvdTitle</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.drivers.lsdvd.LsdvdDisc"><code class="docutils literal notranslate"><span class="pre">LsdvdDisc</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diskripr.drivers.lsdvd.LsdvdDriver"><code class="docutils literal notranslate"><span class="pre">LsdvdDriver</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="util.html">Utilities</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Project</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">diskripr</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Drivers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/drivers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="drivers">
+<h1>Drivers<a class="headerlink" href="#drivers" title="Link to this heading"></a></h1>
+<section id="module-diskripr.drivers.base">
+<span id="base"></span><h2>Base<a class="headerlink" href="#module-diskripr.drivers.base" title="Link to this heading"></a></h2>
+<p>Base driver class and subprocess utilities for the diskripr driver layer.</p>
+<p>Defines the <code class="docutils literal notranslate"><span class="pre">BaseDriver</span></code> abstract base that every tool-specific driver
+subclasses.  Subclasses set the <code class="docutils literal notranslate"><span class="pre">binary</span></code> class variable to the name of the
+external binary they wrap and call <code class="docutils literal notranslate"><span class="pre">self.run()</span></code> / <code class="docutils literal notranslate"><span class="pre">self.stream()</span></code> instead
+of invoking <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> directly.</p>
+<p><code class="docutils literal notranslate"><span class="pre">BaseDriver</span></code> provides:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">is_available()</span></code>      — Return <code class="docutils literal notranslate"><span class="pre">True</span></code> if <code class="docutils literal notranslate"><span class="pre">self.binary</span></code> is on PATH.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">require_available()</span></code> — Raise <code class="docutils literal notranslate"><span class="pre">ToolNotFound</span></code> if the binary is absent.</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">run(args,</span> <span class="pre">...)</span></code>      — Run a command to completion. Tracks <code class="docutils literal notranslate"><span class="pre">active_pid</span></code></dt><dd><p>while the subprocess runs. Raises <code class="docutils literal notranslate"><span class="pre">ToolError</span></code>
+on a non-zero return code.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">stream(args,</span> <span class="pre">...)</span></code>   — Run a command and yield stdout lines in real time.</dt><dd><p>Tracks <code class="docutils literal notranslate"><span class="pre">active_pid</span></code> for the duration of the
+stream; clears it in a <code class="docutils literal notranslate"><span class="pre">finally</span></code> block so the
+PID is always released even if the caller breaks
+out of the loop early.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">active_pid</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code> when no subprocess is running and holds the integer
+OS process ID while one is active.  Callers that need to cancel a long-running
+operation (e.g. a rip) can read this attribute and send a signal.</p>
+<p>Module-level utilities kept for convenience:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">check_available(binary)</span></code> — PATH check without a driver instance.</p></li>
+</ul>
+<p>Exception hierarchy:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ToolError</span></code>    — Non-zero exit code; carries command, returncode, stderr.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ToolNotFound</span></code> — Binary not found on PATH.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RipError</span></code>     — Title-level rip failure (subclass of <code class="docutils literal notranslate"><span class="pre">ToolError</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EncodeError</span></code>  — Title-level encode failure (subclass of <code class="docutils literal notranslate"><span class="pre">ToolError</span></code>).</p></li>
+</ul>
+<dl class="py data">
+<dt class="sig sig-object py" id="diskripr.drivers.base.DEFAULT_TIMEOUT">
+<span class="sig-prename descclassname"><span class="pre">diskripr.drivers.base.</span></span><span class="sig-name descname"><span class="pre">DEFAULT_TIMEOUT</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">60</span></span><a class="headerlink" href="#diskripr.drivers.base.DEFAULT_TIMEOUT" title="Link to this definition"></a></dt>
+<dd><p>Default timeout in seconds for non-streaming subprocess invocations.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="diskripr.drivers.base.ToolError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">diskripr.drivers.base.</span></span><span class="sig-name descname"><span class="pre">ToolError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">returncode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diskripr/drivers/base.html#ToolError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.base.ToolError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>A driver invocation returned a non-zero exit code.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.drivers.base.ToolError.command">
+<span class="sig-name descname"><span class="pre">command</span></span><a class="headerlink" href="#diskripr.drivers.base.ToolError.command" title="Link to this definition"></a></dt>
+<dd><p>The full argument list that was executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.drivers.base.ToolError.returncode">
+<span class="sig-name descname"><span class="pre">returncode</span></span><a class="headerlink" href="#diskripr.drivers.base.ToolError.returncode" title="Link to this definition"></a></dt>
+<dd><p>The process exit code.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.drivers.base.ToolError.stderr">
+<span class="sig-name descname"><span class="pre">stderr</span></span><a class="headerlink" href="#diskripr.drivers.base.ToolError.stderr" title="Link to this definition"></a></dt>
+<dd><p>Captured stderr output (may be empty for streaming calls).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="diskripr.drivers.base.ToolNotFound">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">diskripr.drivers.base.</span></span><span class="sig-name descname"><span class="pre">ToolNotFound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">binary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diskripr/drivers/base.html#ToolNotFound"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.base.ToolNotFound" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/exceptions.html#Exception" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>A required or optional binary was not found on PATH.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.drivers.base.ToolNotFound.binary">
+<span class="sig-name descname"><span class="pre">binary</span></span><a class="headerlink" href="#diskripr.drivers.base.ToolNotFound.binary" title="Link to this definition"></a></dt>
+<dd><p>The binary name that was searched for.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="diskripr.drivers.base.RipError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">diskripr.drivers.base.</span></span><span class="sig-name descname"><span class="pre">RipError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">returncode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diskripr/drivers/base.html#RipError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.base.RipError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#diskripr.drivers.base.ToolError" title="diskripr.drivers.base.ToolError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ToolError</span></code></a></p>
+<p>A title-level rip failure reported by makemkvcon.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="diskripr.drivers.base.EncodeError">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">diskripr.drivers.base.</span></span><span class="sig-name descname"><span class="pre">EncodeError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">returncode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">stderr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diskripr/drivers/base.html#EncodeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.base.EncodeError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#diskripr.drivers.base.ToolError" title="diskripr.drivers.base.ToolError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ToolError</span></code></a></p>
+<p>A title-level encode failure reported by HandBrakeCLI.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="diskripr.drivers.base.check_available">
+<span class="sig-prename descclassname"><span class="pre">diskripr.drivers.base.</span></span><span class="sig-name descname"><span class="pre">check_available</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">binary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/diskripr/drivers/base.html#check_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.base.check_available" title="Link to this definition"></a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">True</span></code> if <em>binary</em> is found on PATH, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+<p>Uses <code class="docutils literal notranslate"><span class="pre">shutil.which</span></code> so the result matches what <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> would do.
+Useful for checking optional tools (ffprobe, HandBrakeCLI) without
+constructing a driver instance.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="diskripr.drivers.base.BaseDriver">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">diskripr.drivers.base.</span></span><span class="sig-name descname"><span class="pre">BaseDriver</span></span><a class="reference internal" href="../_modules/diskripr/drivers/base.html#BaseDriver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.base.BaseDriver" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Base class for all diskripr tool drivers.</p>
+<p>Subclasses must set the <code class="docutils literal notranslate"><span class="pre">binary</span></code> class variable to the name of the
+external tool they wrap:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MakeMKVDriver</span><span class="p">(</span><span class="n">BaseDriver</span><span class="p">):</span>
+    <span class="n">binary</span> <span class="o">=</span> <span class="s2">&quot;makemkvcon&quot;</span>
+</pre></div>
+</div>
+<p>Instance attributes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">active_pid</span></code> (<code class="docutils literal notranslate"><span class="pre">Optional[int]</span></code>) — OS PID of the currently running
+subprocess, or <code class="docutils literal notranslate"><span class="pre">None</span></code> when idle.  Set before the first byte of output
+arrives and cleared in a <code class="docutils literal notranslate"><span class="pre">finally</span></code> block after the process exits (or
+after the stream generator is closed).</p></li>
+</ul>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.drivers.base.BaseDriver.binary">
+<span class="sig-name descname"><span class="pre">binary</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.ClassVar" title="(in Python v3.14)"><span class="pre">ClassVar</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#diskripr.drivers.base.BaseDriver.binary" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.drivers.base.BaseDriver.active_pid">
+<span class="sig-name descname"><span class="pre">active_pid</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="headerlink" href="#diskripr.drivers.base.BaseDriver.active_pid" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="diskripr.drivers.base.BaseDriver.is_available">
+<span class="sig-name descname"><span class="pre">is_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span></span><a class="reference internal" href="../_modules/diskripr/drivers/base.html#BaseDriver.is_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.base.BaseDriver.is_available" title="Link to this definition"></a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">True</span></code> if <code class="docutils literal notranslate"><span class="pre">self.binary</span></code> is found on PATH.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="diskripr.drivers.base.BaseDriver.require_available">
+<span class="sig-name descname"><span class="pre">require_available</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/diskripr/drivers/base.html#BaseDriver.require_available"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.base.BaseDriver.require_available" title="Link to this definition"></a></dt>
+<dd><p>Raise <a class="reference internal" href="#diskripr.drivers.base.ToolNotFound" title="diskripr.drivers.base.ToolNotFound"><code class="xref py py-class docutils literal notranslate"><span class="pre">ToolNotFound</span></code></a> if <code class="docutils literal notranslate"><span class="pre">self.binary</span></code> is not on PATH.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="diskripr.drivers.base.BaseDriver.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">60</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess" title="(in Python v3.14)"><span class="pre">CompletedProcess</span></a></span></span><a class="reference internal" href="../_modules/diskripr/drivers/base.html#BaseDriver.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.base.BaseDriver.run" title="Link to this definition"></a></dt>
+<dd><p>Run <em>args</em> to completion and return the <code class="docutils literal notranslate"><span class="pre">CompletedProcess</span></code> result.</p>
+<p>Sets <code class="docutils literal notranslate"><span class="pre">self.active_pid</span></code> for the duration of the call and clears it
+on exit (including on timeout or exception).  Captures stdout and
+stderr.  Logs the invocation at DEBUG level.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – Full command and argument list.</p></li>
+<li><p><strong>timeout</strong> – Seconds before the subprocess is killed on timeout.
+Defaults to <a class="reference internal" href="#diskripr.drivers.base.DEFAULT_TIMEOUT" title="diskripr.drivers.base.DEFAULT_TIMEOUT"><code class="xref py py-data docutils literal notranslate"><span class="pre">diskripr.drivers.base.DEFAULT_TIMEOUT</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#diskripr.drivers.base.ToolError" title="diskripr.drivers.base.ToolError"><strong>ToolError</strong></a> – The process exited with a non-zero return code.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/subprocess.html#subprocess.TimeoutExpired" title="(in Python v3.14)"><strong>subprocess.TimeoutExpired</strong></a> – The process did not finish in time.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="diskripr.drivers.base.BaseDriver.stream">
+<span class="sig-name descname"><span class="pre">stream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator" title="(in Python v3.14)"><span class="pre">Iterator</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/diskripr/drivers/base.html#BaseDriver.stream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.base.BaseDriver.stream" title="Link to this definition"></a></dt>
+<dd><p>Run <em>args</em> via Popen and yield stdout lines as they arrive.</p>
+<p>Sets <code class="docutils literal notranslate"><span class="pre">self.active_pid</span></code> when the process starts and clears it in a
+<code class="docutils literal notranslate"><span class="pre">finally</span></code> block so the PID is always released — even when the caller
+breaks out of the iteration loop early or the generator is garbage
+collected.</p>
+<p>stderr is merged into stdout so that tool error messages appear
+alongside progress output (appropriate for MakeMKV and HandBrake,
+which write all meaningful output to stdout).</p>
+<p>Each yielded string is a single line with the trailing newline
+stripped.  After the stream is exhausted the process exit code is
+checked and <a class="reference internal" href="#diskripr.drivers.base.ToolError" title="diskripr.drivers.base.ToolError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ToolError</span></code></a> is raised if it is non-zero.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> – Full command and argument list.</p></li>
+<li><p><strong>timeout</strong> – Seconds to wait for the process to exit <em>after</em> the
+output stream ends.  <code class="docutils literal notranslate"><span class="pre">None</span></code> means wait indefinitely.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#diskripr.drivers.base.ToolError" title="diskripr.drivers.base.ToolError"><strong>ToolError</strong></a> – The process exited with a non-zero return code.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/subprocess.html#subprocess.TimeoutExpired" title="(in Python v3.14)"><strong>subprocess.TimeoutExpired</strong></a> – The process did not exit within
+    <em>timeout</em> after its stream closed.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream</span><span class="p">([</span><span class="s2">&quot;makemkvcon&quot;</span><span class="p">,</span> <span class="s2">&quot;mkv&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;PRGV:&quot;</span><span class="p">):</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-diskripr.drivers.makemkv">
+<span id="makemkv"></span><h2>MakeMKV<a class="headerlink" href="#module-diskripr.drivers.makemkv" title="Link to this heading"></a></h2>
+<p>Driver for <code class="docutils literal notranslate"><span class="pre">makemkvcon</span></code> — disc scanning and title ripping.</p>
+<p>This is the most complex driver due to MakeMKV’s ad-hoc line-oriented output
+format. Exposes three methods on <a class="reference internal" href="#diskripr.drivers.makemkv.MakeMKVDriver" title="diskripr.drivers.makemkv.MakeMKVDriver"><code class="xref py py-class docutils literal notranslate"><span class="pre">MakeMKVDriver</span></code></a>:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">scan_drives()</span></code></dt><dd><p>Run <code class="docutils literal notranslate"><span class="pre">makemkvcon</span> <span class="pre">-r</span> <span class="pre">info</span> <span class="pre">disc:9999</span></code> to discover all connected drives.
+Parse the output and return a list of <code class="docutils literal notranslate"><span class="pre">DriveInfo</span></code> objects. Used to match
+the user-specified device path (e.g. <code class="docutils literal notranslate"><span class="pre">/dev/sr0</span></code>) to the correct MakeMKV
+drive index.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">scan_titles(drive_index)</span></code></dt><dd><p>Run <code class="docutils literal notranslate"><span class="pre">makemkvcon</span> <span class="pre">-r</span> <span class="pre">info</span> <span class="pre">disc:&lt;N&gt;</span></code> for a specific drive. Parse TINFO
+output lines to extract per-title metadata (name, duration, size, chapter
+count, stream summary) and return a list of <code class="docutils literal notranslate"><span class="pre">Title</span></code> dataclasses. Applies
+heuristic type tagging: the longest title is <code class="docutils literal notranslate"><span class="pre">&quot;main&quot;</span></code>; others are
+classified as <code class="docutils literal notranslate"><span class="pre">&quot;feature-length&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;extra&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;short&quot;</span></code> by
+duration thresholds.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">rip_title(drive_index,</span> <span class="pre">title_index,</span> <span class="pre">output_dir,</span> <span class="pre">min_length,</span> <span class="pre">on_progress)</span></code></dt><dd><p>Run <code class="docutils literal notranslate"><span class="pre">makemkvcon</span> <span class="pre">mkv</span> <span class="pre">disc:&lt;N&gt;</span> <span class="pre">&lt;title&gt;</span> <span class="pre">&lt;output_dir&gt;</span> <span class="pre">--minlength=&lt;N&gt;</span></code>.
+Stream stdout, parse <code class="docutils literal notranslate"><span class="pre">PRGV:</span></code> lines for percentage progress callbacks and
+<code class="docutils literal notranslate"><span class="pre">MSG:</span></code> lines for status and error messages. Return a <code class="docutils literal notranslate"><span class="pre">RipResult</span></code>. Raise
+<code class="docutils literal notranslate"><span class="pre">RipError</span></code> on unrecoverable failure.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="diskripr.drivers.makemkv.MakeMKVDriver">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">diskripr.drivers.makemkv.</span></span><span class="sig-name descname"><span class="pre">MakeMKVDriver</span></span><a class="reference internal" href="../_modules/diskripr/drivers/makemkv.html#MakeMKVDriver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.makemkv.MakeMKVDriver" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#diskripr.drivers.base.BaseDriver" title="diskripr.drivers.base.BaseDriver"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDriver</span></code></a></p>
+<p>Driver for <code class="docutils literal notranslate"><span class="pre">makemkvcon</span></code> operations.</p>
+<p>Inherits subprocess management and PID tracking from
+<a class="reference internal" href="#diskripr.drivers.base.BaseDriver" title="diskripr.drivers.base.BaseDriver"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDriver</span></code></a>.  The <code class="docutils literal notranslate"><span class="pre">active_pid</span></code> attribute
+is set while a rip is streaming so callers can cancel the process by
+sending a signal if required.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">driver</span> <span class="o">=</span> <span class="n">MakeMKVDriver</span><span class="p">()</span>
+<span class="n">drives</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">scan_drives</span><span class="p">()</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">scan_titles</span><span class="p">(</span><span class="n">drives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">drive_index</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">rip_title</span><span class="p">(</span><span class="n">drives</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">drive_index</span><span class="p">,</span> <span class="n">titles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.drivers.makemkv.MakeMKVDriver.binary">
+<span class="sig-name descname"><span class="pre">binary</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.ClassVar" title="(in Python v3.14)"><span class="pre">ClassVar</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'makemkvcon'</span></span><a class="headerlink" href="#diskripr.drivers.makemkv.MakeMKVDriver.binary" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="diskripr.drivers.makemkv.MakeMKVDriver.scan_drives">
+<span class="sig-name descname"><span class="pre">scan_drives</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="models.html#diskripr.models.DriveInfo" title="diskripr.models.DriveInfo"><span class="pre">DriveInfo</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/diskripr/drivers/makemkv.html#MakeMKVDriver.scan_drives"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.makemkv.MakeMKVDriver.scan_drives" title="Link to this definition"></a></dt>
+<dd><p>Discover all connected optical drives with an accessible disc.</p>
+<p>Runs <code class="docutils literal notranslate"><span class="pre">makemkvcon</span> <span class="pre">-r</span> <span class="pre">info</span> <span class="pre">disc:9999</span></code> and parses <code class="docutils literal notranslate"><span class="pre">DRV:</span></code> lines.
+Only drives where the accessibility flag equals <code class="docutils literal notranslate"><span class="pre">2</span></code> (disc present
+and readable) are returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of <a class="reference internal" href="models.html#diskripr.models.DriveInfo" title="diskripr.models.DriveInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">DriveInfo</span></code></a> objects, one per
+accessible drive.  Empty if no suitable drive is found.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#diskripr.drivers.base.ToolNotFound" title="diskripr.drivers.base.ToolNotFound"><strong>ToolNotFound</strong></a> – <code class="docutils literal notranslate"><span class="pre">makemkvcon</span></code> is not on PATH.</p></li>
+<li><p><a class="reference internal" href="#diskripr.drivers.base.ToolError" title="diskripr.drivers.base.ToolError"><strong>ToolError</strong></a> – <code class="docutils literal notranslate"><span class="pre">makemkvcon</span></code> exited with a non-zero return code.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="diskripr.drivers.makemkv.MakeMKVDriver.scan_titles">
+<span class="sig-name descname"><span class="pre">scan_titles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drive_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="models.html#diskripr.models.Title" title="diskripr.models.Title"><span class="pre">Title</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/diskripr/drivers/makemkv.html#MakeMKVDriver.scan_titles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.makemkv.MakeMKVDriver.scan_titles" title="Link to this definition"></a></dt>
+<dd><p>Scan a specific drive and return all titles with metadata.</p>
+<p>Runs <code class="docutils literal notranslate"><span class="pre">makemkvcon</span> <span class="pre">-r</span> <span class="pre">info</span> <span class="pre">disc:&lt;drive_index&gt;</span></code> and collects <code class="docutils literal notranslate"><span class="pre">TINFO:</span></code>
+lines keyed by title index and attribute ID.  After all attributes are
+gathered, <a class="reference internal" href="models.html#diskripr.models.Title" title="diskripr.models.Title"><code class="xref py py-class docutils literal notranslate"><span class="pre">Title</span></code></a> objects are created and
+heuristic type tags are assigned.</p>
+<p>Duration normalisation: MakeMKV may omit the leading zero on the hours
+component (e.g. <code class="docutils literal notranslate"><span class="pre">2:11:37</span></code> rather than <code class="docutils literal notranslate"><span class="pre">02:11:37</span></code>); both forms are
+accepted and stored in the canonical <code class="docutils literal notranslate"><span class="pre">HH:MM:SS</span></code> format required by
+<a class="reference internal" href="models.html#diskripr.models.Title" title="diskripr.models.Title"><code class="xref py py-class docutils literal notranslate"><span class="pre">Title</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>drive_index</strong> – The MakeMKV drive index to scan.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of <a class="reference internal" href="models.html#diskripr.models.Title" title="diskripr.models.Title"><code class="xref py py-class docutils literal notranslate"><span class="pre">Title</span></code></a> objects sorted by title
+index.  The longest title is tagged <code class="docutils literal notranslate"><span class="pre">&quot;main&quot;</span></code>; others are
+classified by duration threshold.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#diskripr.drivers.base.ToolNotFound" title="diskripr.drivers.base.ToolNotFound"><strong>ToolNotFound</strong></a> – <code class="docutils literal notranslate"><span class="pre">makemkvcon</span></code> is not on PATH.</p></li>
+<li><p><a class="reference internal" href="#diskripr.drivers.base.ToolError" title="diskripr.drivers.base.ToolError"><strong>ToolError</strong></a> – <code class="docutils literal notranslate"><span class="pre">makemkvcon</span></code> exited with a non-zero return code.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="diskripr.drivers.makemkv.MakeMKVDriver.rip_title">
+<span class="sig-name descname"><span class="pre">rip_title</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">drive_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="util.html#diskripr.util.progress.ProgressCallback" title="diskripr.util.progress.ProgressCallback"><span class="pre">ProgressCallback</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="models.html#diskripr.models.RipResult" title="diskripr.models.RipResult"><span class="pre">RipResult</span></a></span></span><a class="reference internal" href="../_modules/diskripr/drivers/makemkv.html#MakeMKVDriver.rip_title"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.makemkv.MakeMKVDriver.rip_title" title="Link to this definition"></a></dt>
+<dd><p>Rip a single title from a disc to <em>output_dir</em>.</p>
+<p>Streams <code class="docutils literal notranslate"><span class="pre">makemkvcon</span> <span class="pre">mkv</span> <span class="pre">disc:&lt;drive_index&gt;</span> <span class="pre">&lt;title_index&gt;</span> <span class="pre">&lt;output_dir&gt;</span>
+<span class="pre">--minlength=&lt;min_length&gt;</span></code> and parses the output line by line:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PRGV:</span></code> lines drive <a class="reference internal" href="util.html#diskripr.util.progress.ProgressEvent" title="diskripr.util.progress.ProgressEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">ProgressEvent</span></code></a>
+callbacks (stage <code class="docutils literal notranslate"><span class="pre">&quot;rip&quot;</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MSG:</span></code> lines are logged; those with error codes ≥ 5000 set the
+error message on the returned <a class="reference internal" href="models.html#diskripr.models.RipResult" title="diskripr.models.RipResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RipResult</span></code></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TSAV:</span></code> lines record the output filename created by MakeMKV.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">self.active_pid</span></code> is set for the duration of the rip stream so
+callers can send a cancellation signal if needed.</p>
+<p>If no <code class="docutils literal notranslate"><span class="pre">TSAV:</span></code> line is emitted, the driver falls back to the first
+<code class="docutils literal notranslate"><span class="pre">*.mkv</span></code> file found in <em>output_dir</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>drive_index</strong> – MakeMKV drive index (from <a class="reference internal" href="#diskripr.drivers.makemkv.MakeMKVDriver.scan_drives" title="diskripr.drivers.makemkv.MakeMKVDriver.scan_drives"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scan_drives()</span></code></a>).</p></li>
+<li><p><strong>title_index</strong> – Title index to rip (from <a class="reference internal" href="#diskripr.drivers.makemkv.MakeMKVDriver.scan_titles" title="diskripr.drivers.makemkv.MakeMKVDriver.scan_titles"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scan_titles()</span></code></a>).</p></li>
+<li><p><strong>output_dir</strong> – Destination directory; created if absent.</p></li>
+<li><p><strong>min_length</strong> – Minimum title duration in seconds passed to
+<code class="docutils literal notranslate"><span class="pre">--minlength</span></code>; <code class="docutils literal notranslate"><span class="pre">0</span></code> disables the filter.</p></li>
+<li><p><strong>on_progress</strong> – Optional progress callback.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="models.html#diskripr.models.RipResult" title="diskripr.models.RipResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">RipResult</span></code></a> with <code class="docutils literal notranslate"><span class="pre">success=True</span></code> on a
+clean rip, or <code class="docutils literal notranslate"><span class="pre">success=False</span></code> with an <code class="docutils literal notranslate"><span class="pre">error_message</span></code> on a
+recoverable failure.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#diskripr.drivers.base.ToolNotFound" title="diskripr.drivers.base.ToolNotFound"><strong>ToolNotFound</strong></a> – <code class="docutils literal notranslate"><span class="pre">makemkvcon</span></code> is not on PATH.</p></li>
+<li><p><a class="reference internal" href="#diskripr.drivers.base.RipError" title="diskripr.drivers.base.RipError"><strong>RipError</strong></a> – <code class="docutils literal notranslate"><span class="pre">makemkvcon</span></code> exited with a non-zero return code.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-diskripr.drivers.handbrake">
+<span id="handbrake"></span><h2>HandBrake<a class="headerlink" href="#module-diskripr.drivers.handbrake" title="Link to this heading"></a></h2>
+<p>Driver for <code class="docutils literal notranslate"><span class="pre">HandBrakeCLI</span></code> — optional video re-encoding.</p>
+<p>Exposes one method on <a class="reference internal" href="#diskripr.drivers.handbrake.HandBrakeDriver" title="diskripr.drivers.handbrake.HandBrakeDriver"><code class="xref py py-class docutils literal notranslate"><span class="pre">HandBrakeDriver</span></code></a>:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">encode(title_index,</span> <span class="pre">input_path,</span> <span class="pre">output_path,</span> <span class="pre">encoder,</span> <span class="pre">quality,</span> <span class="pre">on_progress)</span></code></dt><dd><p>Builds and executes a <code class="docutils literal notranslate"><span class="pre">HandBrakeCLI</span></code> command with fixed requirements:
+copy all audio tracks, preserve all subtitles without burning in, keep
+chapter markers, optimize for streaming, and apply a configurable RF
+quality value. Streams progress output and invokes <code class="docutils literal notranslate"><span class="pre">on_progress</span></code>
+callbacks. Returns an <code class="docutils literal notranslate"><span class="pre">EncodeResult</span></code> including before/after file sizes.</p>
+</dd>
+</dl>
+<p>Raises <code class="docutils literal notranslate"><span class="pre">ToolNotFound</span></code> if <code class="docutils literal notranslate"><span class="pre">HandBrakeCLI</span></code> is not found on PATH. The pipeline
+catches this to skip encoding gracefully rather than aborting.</p>
+<p>On encoding failure, raises <code class="docutils literal notranslate"><span class="pre">EncodeError</span></code> so the pipeline can fall back to
+the original MKV and log a warning.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="diskripr.drivers.handbrake.HandBrakeDriver">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">diskripr.drivers.handbrake.</span></span><span class="sig-name descname"><span class="pre">HandBrakeDriver</span></span><a class="reference internal" href="../_modules/diskripr/drivers/handbrake.html#HandBrakeDriver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.handbrake.HandBrakeDriver" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#diskripr.drivers.base.BaseDriver" title="diskripr.drivers.base.BaseDriver"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDriver</span></code></a></p>
+<p>Driver for <code class="docutils literal notranslate"><span class="pre">HandBrakeCLI</span></code> re-encoding.</p>
+<p>Inherits subprocess management and PID tracking from
+<a class="reference internal" href="#diskripr.drivers.base.BaseDriver" title="diskripr.drivers.base.BaseDriver"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDriver</span></code></a>.  <code class="docutils literal notranslate"><span class="pre">active_pid</span></code> is set while
+an encode is streaming so callers can cancel by sending a signal if needed.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">driver</span> <span class="o">=</span> <span class="n">HandBrakeDriver</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">driver</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+        <span class="n">title_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">input_path</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;title_t00.mkv&quot;</span><span class="p">),</span>
+        <span class="n">output_path</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;title_t00_encoded.mkv&quot;</span><span class="p">),</span>
+        <span class="n">encoder</span><span class="o">=</span><span class="s2">&quot;h265&quot;</span><span class="p">,</span>
+        <span class="n">quality</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.drivers.handbrake.HandBrakeDriver.binary">
+<span class="sig-name descname"><span class="pre">binary</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.ClassVar" title="(in Python v3.14)"><span class="pre">ClassVar</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'HandBrakeCLI'</span></span><a class="headerlink" href="#diskripr.drivers.handbrake.HandBrakeDriver.binary" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="diskripr.drivers.handbrake.HandBrakeDriver.encode">
+<span class="sig-name descname"><span class="pre">encode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">quality</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="util.html#diskripr.util.progress.ProgressCallback" title="diskripr.util.progress.ProgressCallback"><span class="pre">ProgressCallback</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="models.html#diskripr.models.EncodeResult" title="diskripr.models.EncodeResult"><span class="pre">EncodeResult</span></a></span></span><a class="reference internal" href="../_modules/diskripr/drivers/handbrake.html#HandBrakeDriver.encode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.handbrake.HandBrakeDriver.encode" title="Link to this definition"></a></dt>
+<dd><p>Re-encode <em>input_path</em> to <em>output_path</em> using HandBrakeCLI.</p>
+<p>Fixed encoding options applied on every call:</p>
+<ul class="simple">
+<li><p>All audio tracks are copied without re-encoding.</p></li>
+<li><p>All subtitle tracks are preserved without burn-in.</p></li>
+<li><p>Chapter markers are preserved.</p></li>
+<li><p>Output is optimised for streaming (faststart).</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">self.active_pid</span></code> is set for the duration of the encode so callers
+can send a cancellation signal if required.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>title_index</strong> – The source title index carried through to the result.</p></li>
+<li><p><strong>input_path</strong> – Source MKV file produced by the rip stage.</p></li>
+<li><p><strong>output_path</strong> – Destination path for the encoded MKV.</p></li>
+<li><p><strong>encoder</strong> – Encoding format: <code class="docutils literal notranslate"><span class="pre">&quot;h264&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;h265&quot;</span></code>.</p></li>
+<li><p><strong>quality</strong> – HandBrake RF quality value (lower = higher quality).
+Typical values: 20 for H.264, 22 for H.265.</p></li>
+<li><p><strong>on_progress</strong> – Optional progress callback; called with stage
+<code class="docutils literal notranslate"><span class="pre">&quot;encode&quot;</span></code> and a 0–100 current/total pair.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="models.html#diskripr.models.EncodeResult" title="diskripr.models.EncodeResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">EncodeResult</span></code></a> with <code class="docutils literal notranslate"><span class="pre">success=True</span></code> and
+both file sizes on completion, or <code class="docutils literal notranslate"><span class="pre">success=False</span></code> with an error
+message if no output file is found.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="#diskripr.drivers.base.ToolNotFound" title="diskripr.drivers.base.ToolNotFound"><strong>ToolNotFound</strong></a> – <code class="docutils literal notranslate"><span class="pre">HandBrakeCLI</span></code> is not on PATH.</p></li>
+<li><p><a class="reference internal" href="#diskripr.drivers.base.EncodeError" title="diskripr.drivers.base.EncodeError"><strong>EncodeError</strong></a> – <code class="docutils literal notranslate"><span class="pre">HandBrakeCLI</span></code> exited with a non-zero return code.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-diskripr.drivers.ffprobe">
+<span id="ffprobe"></span><h2>FFprobe<a class="headerlink" href="#module-diskripr.drivers.ffprobe" title="Link to this heading"></a></h2>
+<p>Driver for <code class="docutils literal notranslate"><span class="pre">ffprobe</span></code> — stream inspection of output MKV files.</p>
+<p>Exposes one method on <a class="reference internal" href="#diskripr.drivers.ffprobe.FfprobeDriver" title="diskripr.drivers.ffprobe.FfprobeDriver"><code class="xref py py-class docutils literal notranslate"><span class="pre">FfprobeDriver</span></code></a>:</p>
+<ul>
+<li><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">inspect(mkv_path)</span></code></dt><dd><p>Run <code class="docutils literal notranslate"><span class="pre">ffprobe</span> <span class="pre">-v</span> <span class="pre">quiet</span> <span class="pre">-print_format</span> <span class="pre">json</span> <span class="pre">-show_streams</span> <span class="pre">&lt;path&gt;</span></code> and parse the JSON
+response into a <code class="docutils literal notranslate"><span class="pre">StreamReport</span></code> containing:
+- Video tracks: codec name and resolution.
+- Audio tracks: codec name, language code, channel count.
+- Subtitle tracks: codec name, language code, track title, forced flag.</p>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if <code class="docutils literal notranslate"><span class="pre">ffprobe</span></code> is not available on PATH. Stream inspection
+is informational — its absence never gates any pipeline step.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="py class">
+<dt class="sig sig-object py" id="diskripr.drivers.ffprobe.FfprobeDriver">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">diskripr.drivers.ffprobe.</span></span><span class="sig-name descname"><span class="pre">FfprobeDriver</span></span><a class="reference internal" href="../_modules/diskripr/drivers/ffprobe.html#FfprobeDriver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.ffprobe.FfprobeDriver" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#diskripr.drivers.base.BaseDriver" title="diskripr.drivers.base.BaseDriver"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDriver</span></code></a></p>
+<p>Driver for <code class="docutils literal notranslate"><span class="pre">ffprobe</span></code> stream inspection.</p>
+<p>Inherits subprocess management from
+<a class="reference internal" href="#diskripr.drivers.base.BaseDriver" title="diskripr.drivers.base.BaseDriver"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDriver</span></code></a>.</p>
+<p>Unlike the rip and encode drivers, <code class="docutils literal notranslate"><span class="pre">inspect</span></code> is designed to be
+non-fatal: it returns <code class="docutils literal notranslate"><span class="pre">None</span></code> rather than raising on any failure
+(binary absent, non-zero exit, or malformed JSON) because stream
+inspection is informational and must never gate a pipeline step.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">driver</span> <span class="o">=</span> <span class="n">FfprobeDriver</span><span class="p">()</span>
+<span class="n">report</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">inspect</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;movie.mkv&quot;</span><span class="p">))</span>
+<span class="k">if</span> <span class="n">report</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">track</span> <span class="ow">in</span> <span class="n">report</span><span class="o">.</span><span class="n">audio_tracks</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">track</span><span class="o">.</span><span class="n">language</span><span class="p">,</span> <span class="n">track</span><span class="o">.</span><span class="n">codec</span><span class="p">,</span> <span class="n">track</span><span class="o">.</span><span class="n">channels</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.drivers.ffprobe.FfprobeDriver.binary">
+<span class="sig-name descname"><span class="pre">binary</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.ClassVar" title="(in Python v3.14)"><span class="pre">ClassVar</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ffprobe'</span></span><a class="headerlink" href="#diskripr.drivers.ffprobe.FfprobeDriver.binary" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="diskripr.drivers.ffprobe.FfprobeDriver.inspect">
+<span class="sig-name descname"><span class="pre">inspect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mkv_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="models.html#diskripr.models.StreamReport" title="diskripr.models.StreamReport"><span class="pre">StreamReport</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/diskripr/drivers/ffprobe.html#FfprobeDriver.inspect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.ffprobe.FfprobeDriver.inspect" title="Link to this definition"></a></dt>
+<dd><p>Inspect <em>mkv_path</em> and return a <a class="reference internal" href="models.html#diskripr.models.StreamReport" title="diskripr.models.StreamReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamReport</span></code></a>.</p>
+<p>Runs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ffprobe</span> <span class="o">-</span><span class="n">v</span> <span class="n">quiet</span> <span class="o">-</span><span class="n">print_format</span> <span class="n">json</span> <span class="o">-</span><span class="n">show_streams</span> <span class="o">&lt;</span><span class="n">mkv_path</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>and parses the JSON output into typed track objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mkv_path</strong> – Path to the MKV file to inspect.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <a class="reference internal" href="models.html#diskripr.models.StreamReport" title="diskripr.models.StreamReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">StreamReport</span></code></a> on success, or <code class="docutils literal notranslate"><span class="pre">None</span></code>
+if ffprobe is unavailable, exits with an error, or returns
+malformed JSON.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-diskripr.drivers.lsdvd">
+<span id="lsdvd"></span><h2>lsdvd<a class="headerlink" href="#module-diskripr.drivers.lsdvd" title="Link to this heading"></a></h2>
+<p>Driver for <code class="docutils literal notranslate"><span class="pre">lsdvd</span></code> — quick disc pre-check before MakeMKV scanning.</p>
+<p>Exposes one method on <a class="reference internal" href="#diskripr.drivers.lsdvd.LsdvdDriver" title="diskripr.drivers.lsdvd.LsdvdDriver"><code class="xref py py-class docutils literal notranslate"><span class="pre">LsdvdDriver</span></code></a>:</p>
+<ul>
+<li><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">read_disc(device)</span></code></dt><dd><p>Run <code class="docutils literal notranslate"><span class="pre">lsdvd</span> <span class="pre">-x</span> <span class="pre">&lt;device&gt;</span></code> and parse the disc title and a basic title list
+(index, duration). Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> on any failure.</p>
+<p>Encrypted discs commonly cause <code class="docutils literal notranslate"><span class="pre">lsdvd</span></code> to fail or return incomplete data.
+This failure is non-fatal — MakeMKV handles CSS decryption independently.
+The result is used only as a fast pre-check to surface the disc title
+before the slower MakeMKV scan begins.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Defines two result dataclasses local to this module (not shared across the
+pipeline, so not in <code class="docutils literal notranslate"><span class="pre">models.py</span></code>):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LsdvdTitle</span></code> — title index and duration string (<code class="docutils literal notranslate"><span class="pre">HH:MM:SS</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LsdvdDisc</span></code>  — disc title plus the list of <code class="docutils literal notranslate"><span class="pre">LsdvdTitle</span></code> entries.</p></li>
+</ul>
+<p>Raises <code class="docutils literal notranslate"><span class="pre">ToolNotFound</span></code> if <code class="docutils literal notranslate"><span class="pre">lsdvd</span></code> is not available; callers are expected to
+catch this and skip the pre-check silently.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="diskripr.drivers.lsdvd.LsdvdTitle">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">diskripr.drivers.lsdvd.</span></span><span class="sig-name descname"><span class="pre">LsdvdTitle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diskripr/drivers/lsdvd.html#LsdvdTitle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.lsdvd.LsdvdTitle" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Basic per-title info from a quick lsdvd scan.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.drivers.lsdvd.LsdvdTitle.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><a class="headerlink" href="#diskripr.drivers.lsdvd.LsdvdTitle.index" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.drivers.lsdvd.LsdvdTitle.duration">
+<span class="sig-name descname"><span class="pre">duration</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#diskripr.drivers.lsdvd.LsdvdTitle.duration" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="diskripr.drivers.lsdvd.LsdvdDisc">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">diskripr.drivers.lsdvd.</span></span><span class="sig-name descname"><span class="pre">LsdvdDisc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">disc_title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">titles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#diskripr.drivers.lsdvd.LsdvdTitle" title="diskripr.drivers.lsdvd.LsdvdTitle"><span class="pre">LsdvdTitle</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diskripr/drivers/lsdvd.html#LsdvdDisc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.lsdvd.LsdvdDisc" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Disc pre-check result returned by <a class="reference internal" href="#diskripr.drivers.lsdvd.LsdvdDriver.read_disc" title="diskripr.drivers.lsdvd.LsdvdDriver.read_disc"><code class="xref py py-meth docutils literal notranslate"><span class="pre">LsdvdDriver.read_disc()</span></code></a>.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.drivers.lsdvd.LsdvdDisc.disc_title">
+<span class="sig-name descname"><span class="pre">disc_title</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><a class="headerlink" href="#diskripr.drivers.lsdvd.LsdvdDisc.disc_title" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.drivers.lsdvd.LsdvdDisc.titles">
+<span class="sig-name descname"><span class="pre">titles</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#diskripr.drivers.lsdvd.LsdvdTitle" title="diskripr.drivers.lsdvd.LsdvdTitle"><span class="pre">LsdvdTitle</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#diskripr.drivers.lsdvd.LsdvdDisc.titles" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="diskripr.drivers.lsdvd.LsdvdDriver">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">diskripr.drivers.lsdvd.</span></span><span class="sig-name descname"><span class="pre">LsdvdDriver</span></span><a class="reference internal" href="../_modules/diskripr/drivers/lsdvd.html#LsdvdDriver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.lsdvd.LsdvdDriver" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#diskripr.drivers.base.BaseDriver" title="diskripr.drivers.base.BaseDriver"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDriver</span></code></a></p>
+<p>Driver for the <code class="docutils literal notranslate"><span class="pre">lsdvd</span></code> disc pre-check.</p>
+<p><code class="docutils literal notranslate"><span class="pre">read_disc</span></code> is designed to be non-fatal: it returns <code class="docutils literal notranslate"><span class="pre">None</span></code> rather than
+raising whenever lsdvd is absent, exits non-zero (common with CSS-encrypted
+discs), or produces output that cannot be parsed.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">driver</span> <span class="o">=</span> <span class="n">LsdvdDriver</span><span class="p">()</span>
+<span class="n">disc</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">read_disc</span><span class="p">(</span><span class="s2">&quot;/dev/sr0&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">disc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">disc</span><span class="o">.</span><span class="n">disc_title</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="diskripr.drivers.lsdvd.LsdvdDriver.binary">
+<span class="sig-name descname"><span class="pre">binary</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.ClassVar" title="(in Python v3.14)"><span class="pre">ClassVar</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'lsdvd'</span></span><a class="headerlink" href="#diskripr.drivers.lsdvd.LsdvdDriver.binary" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="diskripr.drivers.lsdvd.LsdvdDriver.read_disc">
+<span class="sig-name descname"><span class="pre">read_disc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#diskripr.drivers.lsdvd.LsdvdDisc" title="diskripr.drivers.lsdvd.LsdvdDisc"><span class="pre">LsdvdDisc</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/diskripr/drivers/lsdvd.html#LsdvdDriver.read_disc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diskripr.drivers.lsdvd.LsdvdDriver.read_disc" title="Link to this definition"></a></dt>
+<dd><p>Run <code class="docutils literal notranslate"><span class="pre">lsdvd</span> <span class="pre">-x</span> <span class="pre">&lt;device&gt;</span></code> and return disc title and basic title list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>device</strong> – Block device path of the optical drive (e.g. <code class="docutils literal notranslate"><span class="pre">/dev/sr0</span></code>).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#diskripr.drivers.lsdvd.LsdvdDisc" title="diskripr.drivers.lsdvd.LsdvdDisc"><code class="xref py py-class docutils literal notranslate"><span class="pre">LsdvdDisc</span></code></a> on success, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if lsdvd is unavailable,
+exits with an error, or returns output that contains no disc title.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pipeline.html" class="btn btn-neutral float-left" title="Pipeline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="util.html" class="btn btn-neutral float-right" title="Utilities" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
