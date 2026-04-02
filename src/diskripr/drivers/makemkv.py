@@ -53,9 +53,6 @@ _ATTR_STREAM_SUMMARY = 27
 # MakeMKV progress counter maximum (PRGV third field).
 _PRGV_MAX = 65536
 
-# MSG codes at or above this threshold indicate a rip error.
-_MSG_ERROR_CODE_MIN = 5000
-
 # Normalised duration pattern: allow single-digit hours from MakeMKV output.
 _DURATION_RE = re.compile(r"^(\d+):(\d{2}):(\d{2})$")
 
@@ -286,22 +283,19 @@ class MakeMKVDriver(BaseDriver):
         except ToolError as exc:
             raise RipError(exc.command, exc.returncode, exc.stderr) from exc
 
-        if error_message is not None:
+        output_path = self._resolve_output_path(output_dir, output_filename)
+        if output_path is not None:
             return RipResult(
                 title_index=title_index,
-                output_path=None,
-                success=False,
-                error_message=error_message,
+                output_path=output_path,
+                success=True,
+                error_message=None,
             )
-
-        output_path = self._resolve_output_path(output_dir, output_filename)
         return RipResult(
             title_index=title_index,
-            output_path=output_path,
-            success=output_path is not None,
-            error_message=(
-                None if output_path is not None else "No output MKV found after rip"
-            ),
+            output_path=None,
+            success=False,
+            error_message=error_message or "No output MKV found after rip",
         )
 
     # ------------------------------------------------------------------
@@ -418,10 +412,14 @@ class MakeMKVDriver(BaseDriver):
             return last_message, error_message
         try:
             code = int(fields[0])
+            flags = int(fields[1])
         except ValueError:
             return last_message, error_message
         message_text = fields[3]
-        if code >= _MSG_ERROR_CODE_MIN:
+        # MakeMKV robot-mode MSG flags: bit 1 (0x02) indicates a user-visible
+        # warning or error.  Codes >= _MSG_ERROR_CODE_MIN with flags=0 are
+        # informational status messages (e.g. "Copy complete", "1 titles saved").
+        if flags & 0x02:
             log.warning("makemkvcon error (code %d): %s", code, message_text)
             error_message = message_text
         elif message_text:

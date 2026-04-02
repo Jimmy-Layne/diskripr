@@ -8,19 +8,20 @@ Strategy:
 - ``scan_drives`` and ``scan_titles`` are tested by mocking ``run`` to return
   fixture file content as stdout.
 - ``rip_title`` is tested by mocking ``stream`` to yield lines from a
-  constructed inline fixture that avoids MakeMKV's overloaded 5xxx MSG codes.
+  constructed inline fixture.
 
 Fixture files used:
 - ``tests/data/makemkv/scan_drives.txt``
 - ``tests/data/makemkv/scan_titles.txt``
 - ``tests/data/makemkv/rip_progress.txt``
 
-Known implementation note:
-  The current driver treats any MSG code >= 5000 as a rip error.  MakeMKV
-  uses several 5xxx codes for normal completion messages (e.g. 5011 "Operation
-  successfully completed", 5005 "N titles saved").  Tests for ``rip_title``
-  therefore use an inline fixture free of 5xxx codes to exercise the clean
-  success path; a separate test covers the documented error-detection behaviour.
+MSG error detection note:
+  The driver uses the MSG flags field (second CSV field) to distinguish errors
+  from informational status messages.  MakeMKV uses flags=0 for informational
+  5xxx codes (e.g. 5011 "Operation successfully completed", 5036 "Copy
+  complete") and non-zero flags (bit 1 set) for real error messages.  Success
+  is also confirmed by the presence of an output MKV file; error_message is
+  only surfaced when no output file was produced.
 """
 
 from __future__ import annotations
@@ -39,8 +40,9 @@ from diskripr.drivers.makemkv import (
 )
 from diskripr.util.progress import ProgressEvent
 
-# Inline fixtures for rip_title tests — avoids 5xxx MSG codes that trigger the
-# error path in the current implementation.
+# Inline fixtures for rip_title tests.
+# _CLEAN_RIP_OUTPUT includes realistic 5xxx status codes (flags=0) that MakeMKV
+# emits on a successful rip.  These should NOT be treated as errors.
 _CLEAN_RIP_OUTPUT = """\
 MSG:1005,0,1,"MakeMKV v1.18.3 linux(x64-release) started","%1 started","MakeMKV v1.18.3 linux(x64-release)"
 MSG:3007,0,0,"Using direct disc access mode","Using direct disc access mode"
@@ -48,12 +50,14 @@ PRGV:0,0,65536
 PRGV:32768,32768,65536
 PRGV:65536,65536,65536
 TSAV:1,"A1_t01.mkv"
-MSG:3028,0,3,"Title #2 was added (1 cell(s), 0:00:32)","Title #%1 was added (%2 cell(s), %3)","2","1","0:00:32"
+MSG:5011,0,0,"Operation successfully completed","Operation successfully completed"
+MSG:5036,0,0,"Copy complete. 1 titles saved.","Copy complete. %1 titles saved.","1"
 """
 
+# Real MakeMKV error messages use non-zero flags (bit 1 set).
 _ERROR_RIP_OUTPUT = """\
 MSG:1005,0,1,"MakeMKV v1.18.3 linux(x64-release) started","%1 started","MakeMKV v1.18.3 linux(x64-release)"
-MSG:6003,0,0,"Cannot decrypt title","Cannot decrypt title"
+MSG:6003,2,0,"Cannot decrypt title","Cannot decrypt title"
 """
 
 
@@ -197,19 +201,28 @@ class TestHandleMsg:
         assert last_msg == "Using direct disc access mode"
         assert err_msg is None
 
-    def test_high_code_sets_error_message(self) -> None:
+    def test_nonzero_flags_sets_error_message(self) -> None:
         last_msg, err_msg = MakeMKVDriver._handle_msg(
-            'MSG:6003,0,0,"Cannot decrypt title","Cannot decrypt title"',
+            'MSG:6003,2,0,"Cannot decrypt title","Cannot decrypt title"',
             None, None,
         )
         assert err_msg == "Cannot decrypt title"
 
-    def test_error_message_preserved_across_later_low_code_msg(self) -> None:
+    def test_5xxx_code_with_zero_flags_is_not_an_error(self) -> None:
+        """Informational 5xxx completion codes (flags=0) must not set error_message."""
+        _, err_msg = MakeMKVDriver._handle_msg(
+            'MSG:5011,0,0,"Operation successfully completed","Operation successfully completed"',
+            None, None,
+        )
+        assert err_msg is None
+
+    def test_error_message_preserved_across_later_informational_msg(self) -> None:
         _, first_err = MakeMKVDriver._handle_msg(
-            'MSG:6003,0,0,"Decrypt error","Decrypt error"', None, None,
+            'MSG:6003,2,0,"Decrypt error","Decrypt error"', None, None,
         )
         _, second_err = MakeMKVDriver._handle_msg(
-            'MSG:3007,0,0,"Continuing","Continuing"', None, first_err,
+            'MSG:5036,0,0,"Copy complete. 1 titles saved.","Copy complete. %1 titles saved.","1"',
+            None, first_err,
         )
         assert second_err == "Decrypt error"
 
