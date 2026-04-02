@@ -229,6 +229,11 @@ class Pipeline:
             RuntimeError: Device not found, no accessible MakeMKV drive, or
                           no titles remain after ``min_length`` filtering.
         """
+        log.info(
+            "Discover: device=%s  min_length=%ds",
+            self.config.device,
+            self.config.min_length,
+        )
         if not Path(self.config.device).exists():
             raise RuntimeError(
                 f"Device not found: {self.config.device!r}. "
@@ -278,6 +283,12 @@ class Pipeline:
             title for title in titles
             if title.duration_seconds >= self.config.min_length
         ]
+        log.info(
+            "Title filter: %d of %d title(s) meet min_length=%ds",
+            len(filtered),
+            len(titles),
+            self.config.min_length,
+        )
         if not filtered:
             raise RuntimeError(
                 f"No titles found on {self.config.device!r} with duration "
@@ -336,6 +347,12 @@ class Pipeline:
                 "assign pipeline.selection before calling rip()."
             )
 
+        log.info(
+            "Rip: %d title(s) selected (main + %d extras) -> %s",
+            len(self.selection.extras) + 1,
+            len(self.selection.extras),
+            self.config.temp_dir,
+        )
         temp_dir = make_temp_dir(self.config.temp_dir)
         makemkv = MakeMKVDriver()
 
@@ -404,6 +421,7 @@ class Pipeline:
             List of :class:`~diskripr.models.EncodeResult`.  An empty list
             signals that :meth:`organize` should use :attr:`Pipeline.rip_results`.
         """
+        log.info("Encode: format=%s", self.config.encode_format)
         if self.config.encode_format == "none":
             log.debug("Encoding skipped (encode_format='none')")
             self.encode_results = []
@@ -515,6 +533,11 @@ class Pipeline:
                 "before calling organize()."
             )
 
+        log.info(
+            "Organize: %d successful rip result(s) -> %s",
+            sum(1 for res in self.rip_results if res.success),
+            self.config.output_dir,
+        )
         effective = self._effective_results()
 
         safe_name = sanitize_filename(self.config.movie_name)

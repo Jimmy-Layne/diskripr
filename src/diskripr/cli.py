@@ -20,6 +20,8 @@ Typical multi-disc workflow::
 """
 from __future__ import annotations
 
+import logging
+import os
 from pathlib import Path
 from typing import Optional
 
@@ -43,6 +45,37 @@ from diskripr.util.filesystem import (
     scan_existing_extras,
 )
 from diskripr.util.progress import ProgressEvent
+
+# ---------------------------------------------------------------------------
+# Logging configuration
+# ---------------------------------------------------------------------------
+
+_VALID_LOG_LEVELS = {"debug", "info", "warning", "error", "critical"}
+
+
+def _configure_logging() -> None:
+    """Configure the diskripr package logger from DISKRIPR_LOG_LEVEL.
+
+    Reads the ``DISKRIPR_LOG_LEVEL`` environment variable (case-insensitive).
+    Defaults to ``"info"`` when the variable is unset or contains an
+    unrecognised level name.  Log records are written to stderr.
+    """
+    level_name = os.environ.get("DISKRIPR_LOG_LEVEL", "info").lower()
+    if level_name not in _VALID_LOG_LEVELS:
+        level_name = "info"
+    level = getattr(logging, level_name.upper())
+    handler = logging.StreamHandler()
+    handler.setFormatter(
+        logging.Formatter(
+            fmt="%(asctime)s %(levelname)-8s %(name)s: %(message)s",
+            datefmt="%H:%M:%S",
+        )
+    )
+    pkg_logger = logging.getLogger("diskripr")
+    pkg_logger.setLevel(level)
+    pkg_logger.addHandler(handler)
+    pkg_logger.propagate = False
+
 
 # ---------------------------------------------------------------------------
 # Dependency metadata
@@ -407,6 +440,7 @@ def _keep_original_option(func):  # type: ignore[no-untyped-def]
 @click.version_option()
 def cli() -> None:
     """diskripr — Rip DVDs to a Jellyfin-compatible library."""
+    _configure_logging()
 
 
 # ---------------------------------------------------------------------------

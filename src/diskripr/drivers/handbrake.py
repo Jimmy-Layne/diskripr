@@ -113,14 +113,25 @@ class HandBrakeDriver(BaseDriver):
         )
 
         args = self._build_args(input_path, output_path, encoder, quality)
+        log.info(
+            "Encoding title %d: %s -> %s (%s RF%d)",
+            title_index,
+            input_path.name,
+            output_path.name,
+            encoder,
+            quality,
+        )
         log.debug(
-            "encode: title=%d  encoder=%s  quality=%d  in=%s  out=%s",
+            "encode args: title=%d  encoder=%s  quality=%d  in=%s  out=%s",
             title_index, encoder, quality, input_path, output_path,
         )
 
         try:
             for line in self.stream(args):
-                log.debug("handbrake: %s", line)
+                if line.startswith("Encoding:") or line.startswith("Mux:"):
+                    log.debug("handbrake: %s", line)
+                elif line.strip():
+                    log.info("handbrake: %s", line)
                 self._handle_progress_line(line, on_progress)
         except ToolError as exc:
             raise EncodeError(exc.command, exc.returncode, exc.stderr) from exc

@@ -118,6 +118,7 @@ class MakeMKVDriver(BaseDriver):
             ToolError: ``makemkvcon`` exited with a non-zero return code.
         """
         self.require_available()
+        log.debug("Scanning for accessible optical drives via makemkvcon")
         result = self.run([self.binary, "-r", "info", "disc:9999"], timeout=30)
         drives = []
         for line in result.stdout.splitlines():
@@ -141,6 +142,7 @@ class MakeMKVDriver(BaseDriver):
             # Accessibility flag 2 = drive present with a readable disc.
             if accessible_flag == 2 and device:
                 drives.append(DriveInfo(device=device, drive_index=drive_index))
+        log.info("Found %d accessible drive(s): %s", len(drives), [drv.device for drv in drives])
         return drives
 
     def scan_titles(self, drive_index: int) -> list[Title]:
@@ -169,6 +171,7 @@ class MakeMKVDriver(BaseDriver):
             ToolError: ``makemkvcon`` exited with a non-zero return code.
         """
         self.require_available()
+        log.info("Scanning titles on drive index %d (this may take a moment)", drive_index)
         result = self.run(
             [self.binary, "-r", "info", f"disc:{drive_index}"],
             timeout=300,
@@ -191,8 +194,15 @@ class MakeMKVDriver(BaseDriver):
             )
 
         if not intermediate:
+            log.warning("Drive %d: no titles with parseable durations found", drive_index)
             return []
 
+        log.info(
+            "Drive %d: found %d title(s) from %d raw TINFO entries",
+            drive_index,
+            len(intermediate),
+            len(title_attrs),
+        )
         max_duration_sec = max(dur for _, _, _, dur in intermediate)
         return [
             self._build_title(tid, attrs, dur, norm, dur == max_duration_sec)
@@ -243,6 +253,12 @@ class MakeMKVDriver(BaseDriver):
         """
         self.require_available()
         output_dir.mkdir(parents=True, exist_ok=True)
+        log.info(
+            "Ripping title %d from drive index %d -> %s",
+            title_index,
+            drive_index,
+            output_dir,
+        )
 
         args = [
             self.binary, "mkv",
@@ -408,8 +424,8 @@ class MakeMKVDriver(BaseDriver):
         if code >= _MSG_ERROR_CODE_MIN:
             log.warning("makemkvcon error (code %d): %s", code, message_text)
             error_message = message_text
-        else:
-            log.debug("makemkvcon msg (code %d): %s", code, message_text)
+        elif message_text:
+            log.info("makemkvcon: %s", message_text)
         return message_text, error_message
 
     @staticmethod
