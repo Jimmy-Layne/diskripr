@@ -101,7 +101,7 @@ def build_jellyfin_tree(base: Path, movie_name: str, year: int) -> tuple[Path, P
     Returns a ``(movie_dir, extras_dir)`` tuple. Both directories are created
     if they do not already exist.
     """
-    movie_dir = base / "Movies" / f"{sanitize_filename(movie_name)} ({year})"
+    movie_dir = base / "movies" / f"{sanitize_filename(movie_name)} ({year})"
     extras_dir = movie_dir / "extras"
     extras_dir.mkdir(parents=True, exist_ok=True)
     return movie_dir, extras_dir

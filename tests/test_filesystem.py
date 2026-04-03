@@ -82,7 +82,7 @@ class TestBuildJellyfinTree:
 
     def test_movie_dir_path_structure(self, tmp_path: Path) -> None:
         movie_dir, _ = build_jellyfin_tree(tmp_path, "Test Movie", 2000)
-        assert movie_dir == tmp_path / "Movies" / "Test Movie (2000)"
+        assert movie_dir == tmp_path / "movies" / "Test Movie (2000)"
 
     def test_extras_dir_is_inside_movie_dir(self, tmp_path: Path) -> None:
         movie_dir, extras_dir = build_jellyfin_tree(tmp_path, "Test Movie", 2000)
