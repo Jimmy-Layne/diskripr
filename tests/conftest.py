@@ -16,7 +16,7 @@ from typing import Callable
 
 import pytest
 
-from diskripr.config import Config
+from diskripr.config import MovieConfig
 from diskripr.models import Title
 
 # Absolute path to the tests/data directory, computed once at import time.
@@ -85,9 +85,9 @@ def sample_title(make_title: Callable[..., Title]) -> Title:
 # ---------------------------------------------------------------------------
 
 @pytest.fixture
-def sample_config(tmp_path: Path) -> Config:
-    """A minimal valid ``Config`` using a temporary output directory."""
-    return Config(
+def sample_config(tmp_path: Path) -> MovieConfig:
+    """A minimal valid ``MovieConfig`` using a temporary output directory."""
+    return MovieConfig(
         movie_name="Rosencrantz And Guildenstern Are Dead",
         movie_year=1990,
         output_dir=tmp_path / "output",

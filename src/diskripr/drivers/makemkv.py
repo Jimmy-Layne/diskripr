@@ -48,6 +48,8 @@ _ATTR_NAME = 2
 _ATTR_CHAPTER_COUNT = 8
 _ATTR_DURATION = 9
 _ATTR_SIZE_BYTES = 11
+_ATTR_SEGMENTS_COUNT = 25
+_ATTR_SEGMENTS_MAP = 26
 _ATTR_STREAM_SUMMARY = 27
 
 # MakeMKV progress counter maximum (PRGV third field).
@@ -360,6 +362,16 @@ class MakeMKVDriver(BaseDriver):
         except ValueError:
             size_bytes = 0
 
+        segment_count: Optional[int] = None
+        segment_count_raw = attrs.get(_ATTR_SEGMENTS_COUNT)
+        if segment_count_raw is not None:
+            try:
+                segment_count = int(segment_count_raw)
+            except ValueError:
+                pass
+
+        segments_map: Optional[str] = attrs.get(_ATTR_SEGMENTS_MAP)
+
         return Title(
             index=title_id,
             name=name,
@@ -368,6 +380,8 @@ class MakeMKVDriver(BaseDriver):
             chapter_count=chapter_count,
             stream_summary=attrs.get(_ATTR_STREAM_SUMMARY, ""),
             title_type=_classify_title_type(duration_sec, is_longest),
+            segment_count=segment_count,
+            segments_map=segments_map,
         )
 
     @staticmethod

@@ -10,14 +10,18 @@ Defined types:
 - ``DiscInfo``          — Drive info, disc title string, and title list.
 - ``Title``             — Per-title metadata from a MakeMKV scan: index, name,
                           duration (HH:MM:SS), size in bytes, chapter count,
-                          stream summary, and a heuristic type tag
+                          stream summary, a heuristic type tag
                           (``"main"``, ``"feature-length"``, ``"extra"``,
-                          ``"short"``). Computed property ``duration_seconds``.
+                          ``"short"``), and optional MakeMKV segment fields.
+                          Computed property ``duration_seconds``.
 - ``Selection``         — The chosen main ``Title`` plus a list of
                           ``ClassifiedExtra`` objects.
 - ``ClassifiedExtra``   — A ``Title`` reference annotated with a Jellyfin extra
                           type (e.g. ``"behindthescenes"``) and the generated
                           output filename.
+- ``EpisodeEntry``      — A ``Title`` mapped to a TV episode with season/episode
+                          numbers and an optional episode title.
+- ``ShowSelection``     — Episode and extra lists produced by show classification.
 - ``RipResult``         — Outcome of ripping a single title: title index,
                           output path, success flag, error message.
 - ``EncodeResult``      — Same shape as ``RipResult`` plus original and encoded
@@ -87,6 +91,8 @@ class Title:
     chapter_count: int
     stream_summary: str
     title_type: TitleType
+    segment_count: Optional[int] = None
+    segments_map: Optional[str] = None
 
     def __post_init__(self) -> None:
         if self.index < 0:
@@ -126,6 +132,24 @@ class Selection:
     """The chosen main Title plus any classified extras."""
 
     main: Title
+    extras: list[ClassifiedExtra] = field(default_factory=list)
+
+
+@dataclass
+class EpisodeEntry:
+    """A Title mapped to a specific TV episode."""
+
+    title: Title
+    season_number: int
+    episode_number: int
+    episode_title: Optional[str] = None
+
+
+@dataclass
+class ShowSelection:
+    """Episode and extra lists produced by show classification."""
+
+    episodes: list[EpisodeEntry] = field(default_factory=list)
     extras: list[ClassifiedExtra] = field(default_factory=list)
 
 

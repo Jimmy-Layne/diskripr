@@ -1,0 +1,23 @@
+Disc Title: SHARED_VTS_DISC
+Title: 01, Length: 02:00:00.000 Chapters: 20, Cells: 20, Audio streams: 03, Subpictures: 01
+	VTS: 01, TTN: 01, FPS: 29.97, Format: NTSC, Aspect ratio: 16/9, Width: 720, Height: 480, DF: Letterbox
+	Number of Angles: 1
+	Audio: 1, Language: en - English, Format: ac3, Frequency: 48000, Quantization: drc, Channels: 6, AP: 0, Content: Undefined, Stream id: 0x80
+	Audio: 2, Language: en - English, Format: ac3, Frequency: 48000, Quantization: drc, Channels: 2, AP: 0, Content: Undefined, Stream id: 0x81
+	Audio: 3, Language: en - English, Format: dts, Frequency: 48000, Quantization: drc, Channels: 5, AP: 0, Content: Undefined, Stream id: 0x8a
+Title: 02, Length: 00:20:00.000 Chapters: 04, Cells: 04, Audio streams: 02, Subpictures: 00
+	VTS: 02, TTN: 01, FPS: 29.97, Format: NTSC, Aspect ratio: 16/9, Width: 720, Height: 480, DF: Letterbox
+	Number of Angles: 1
+	Audio: 1, Language: en - English, Format: ac3, Frequency: 48000, Quantization: drc, Channels: 2, AP: 0, Content: Undefined, Stream id: 0x80
+	Audio: 2, Language: en - English, Format: ac3, Frequency: 48000, Quantization: drc, Channels: 2, AP: 0, Content: Undefined, Stream id: 0x81
+Title: 03, Length: 00:18:00.000 Chapters: 04, Cells: 04, Audio streams: 02, Subpictures: 00
+	VTS: 02, TTN: 02, FPS: 29.97, Format: NTSC, Aspect ratio: 16/9, Width: 720, Height: 480, DF: Letterbox
+	Number of Angles: 1
+	Audio: 1, Language: en - English, Format: ac3, Frequency: 48000, Quantization: drc, Channels: 2, AP: 0, Content: Undefined, Stream id: 0x80
+	Audio: 2, Language: en - English, Format: ac3, Frequency: 48000, Quantization: drc, Channels: 2, AP: 0, Content: Undefined, Stream id: 0x81
+Title: 04, Length: 00:22:00.000 Chapters: 05, Cells: 05, Audio streams: 02, Subpictures: 00
+	VTS: 02, TTN: 03, FPS: 29.97, Format: NTSC, Aspect ratio: 16/9, Width: 720, Height: 480, DF: Letterbox
+	Number of Angles: 1
+	Audio: 1, Language: en - English, Format: ac3, Frequency: 48000, Quantization: drc, Channels: 2, AP: 0, Content: Undefined, Stream id: 0x80
+	Audio: 2, Language: en - English, Format: ac3, Frequency: 48000, Quantization: drc, Channels: 2, AP: 0, Content: Undefined, Stream id: 0x81
+Longest track: 01

@@ -338,6 +338,28 @@ class TestScanTitles:
         titles = self._run_with_fixture(driver)
         assert titles[0].name == "Title_00"
 
+    def test_segment_count_parsed_from_attr_25(self) -> None:
+        # scan_titles.txt has TINFO:0,25,0,"1" → segment_count=1.
+        driver = MakeMKVDriver()
+        titles = self._run_with_fixture(driver)
+        assert titles[0].segment_count == 1
+
+    def test_segments_map_parsed_from_attr_26(self) -> None:
+        # scan_titles.txt has TINFO:0,26,0,"1-13" → segments_map="1-13".
+        driver = MakeMKVDriver()
+        titles = self._run_with_fixture(driver)
+        assert titles[0].segments_map == "1-13"
+
+    def test_segment_fields_none_when_attrs_absent(self) -> None:
+        inline = 'TINFO:0,9,0,"01:00:00"\n'
+        driver = MakeMKVDriver()
+        completed = subprocess.CompletedProcess(["makemkvcon"], 0, inline, "")
+        with patch.object(driver, "require_available"):
+            with patch.object(driver, "run", return_value=completed):
+                titles = driver.scan_titles(0)
+        assert titles[0].segment_count is None
+        assert titles[0].segments_map is None
+
     def test_empty_output_returns_empty_list(self) -> None:
         driver = MakeMKVDriver()
         completed = subprocess.CompletedProcess(["makemkvcon"], 0, "", "")

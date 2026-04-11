@@ -1,33 +1,41 @@
+# pylint: disable=duplicate-code
 """Runtime configuration for the diskripr pipeline.
 
-Provides the ``Config`` dataclass, which holds all parameters that control
-pipeline behaviour:
+Provides three configuration dataclasses:
+
+- ``BaseConfig``  — shared fields for all pipeline types (device, encoding,
+                    output paths, etc.).
+- ``MovieConfig`` — extends ``BaseConfig`` with ``movie_name`` and
+                    ``movie_year`` for single-movie rips.
+- ``ShowConfig``  — extends ``BaseConfig`` with ``show_name``,
+                    ``season_number``, and ``start_episode`` for TV season
+                    rips.
+
+Each subclass exposes a ``validate()`` method that collects all invalid-field
+errors and raises ``ConfigError`` with a single semicolon-separated message.
+``MovieConfig`` and ``ShowConfig`` both check the shared encoding parameters
+(via ``BaseConfig.validate()``) as well as their own type-specific fields.
+
+Shared ``BaseConfig`` fields:
 
 - ``output_dir``        — Base output directory (default: ``./dvd_output``).
-- ``temp_dir``          — Temporary working directory for ripped files;
-                          defaults to ``<output_dir>/.tmp``. Can be overridden
-                          via the ``DISKRIPR_TEMP_DIR`` environment variable.
+- ``temp_dir``          — Temporary working directory; defaults to
+                          ``<output_dir>/.tmp``. Overridable via
+                          ``DISKRIPR_TEMP_DIR`` environment variable.
 - ``device``            — Optical drive block device path (default: ``/dev/sr0``).
-- ``movie_name``        — Movie title for Jellyfin naming (required).
-- ``movie_year``        — Release year for Jellyfin naming (required).
-- ``disc_number``       — Disc number for multi-disc movies; ``None`` for
+- ``disc_number``       — Disc number for multi-disc titles; ``None`` for
                           single-disc behaviour.
-- ``media_type``        — Media type; only ``"movie"`` is supported in v1.
 - ``rip_mode``          — Title selection mode: ``"main"``, ``"all"``, or
                           ``"ask"``.
 - ``encode_format``     — Encoding format: ``"h264"``, ``"h265"``, ``"none"``,
                           or ``"ask"``.
 - ``quality``           — HandBrake RF quality value (default: 20 for h264,
                           22 for h265).
-- ``min_length``        — Minimum title duration in seconds (default: 30).
+- ``min_length``        — Minimum title duration in seconds (default: 10).
 - ``keep_original``     — Retain pre-encode MKVs in an ``originals/``
                           subdirectory (default: ``False``).
 - ``eject_on_complete`` — Eject disc when the pipeline finishes
                           (default: ``True``).
-
-Also exposes a ``validate()`` method that checks for impossible combinations
-(e.g. encoding requested but HandBrakeCLI absent) and a factory classmethod
-for constructing a ``Config`` from Click parameter values.
 """
 
 from __future__ import annotations
@@ -39,7 +47,6 @@ from typing import Literal, Optional
 
 RipMode = Literal["main", "all", "ask"]
 EncodeFormat = Literal["h264", "h265", "none", "ask"]
-MediaType = Literal["movie"]
 
 _DEFAULT_QUALITY: dict[str, int] = {"h264": 20, "h265": 22}
 _ENCODING_FORMATS = frozenset({"h264", "h265"})
@@ -51,24 +58,21 @@ _MAX_RF_QUALITY = 51
 
 
 class ConfigError(ValueError):
-    """Raised by ``Config.validate()`` for invalid or impossible configurations."""
+    """Raised by ``validate()`` for invalid or impossible configurations."""
 
 
-@dataclass
-class Config:  # pylint: disable=too-many-instance-attributes
-    """All parameters that control a single diskripr pipeline run."""
+@dataclass(kw_only=True)
+class BaseConfig:  # pylint: disable=too-many-instance-attributes
+    """Shared configuration fields common to all pipeline types."""
 
-    movie_name: str
-    movie_year: int
     output_dir: Path = field(default_factory=lambda: Path("dvd_output"))
     temp_dir: Optional[Path] = None
     device: str = "/dev/sr0"
     disc_number: Optional[int] = None
-    media_type: MediaType = "movie"
     rip_mode: RipMode = "main"
     encode_format: EncodeFormat = "none"
     quality: Optional[int] = None
-    min_length: int = 30
+    min_length: int = 10
     keep_original: bool = False
     eject_on_complete: bool = True
 
@@ -89,31 +93,20 @@ class Config:  # pylint: disable=too-many-instance-attributes
             self.quality = _DEFAULT_QUALITY[self.encode_format]
 
     def validate(self) -> None:
-        """Raise ``ConfigError`` if the configuration is invalid or impossible.
+        """Raise ``ConfigError`` for shared invalid configuration.
 
         Checks performed:
 
-        - ``movie_name`` must not be blank.
-        - ``movie_year`` must be in the range 1888–2099.
         - ``disc_number`` must be >= 1 when set.
         - ``min_length`` must be > 0.
         - ``quality`` must be in 0–51 when encoding is requested.
         - HandBrakeCLI must be on PATH when ``encode_format`` is ``"h264"`` or
           ``"h265"``.
         """
-        # Import here to avoid a circular import; driver modules do not import config.
+        # Import here to avoid circular import; driver modules do not import config.
         from diskripr.drivers.handbrake import HandBrakeDriver  # pylint: disable=import-outside-toplevel
 
         errors: list[str] = []
-
-        if not self.movie_name.strip():
-            errors.append("movie_name must not be blank")
-
-        if not _MIN_YEAR <= self.movie_year <= _MAX_YEAR:
-            errors.append(
-                f"movie_year must be between {_MIN_YEAR} and {_MAX_YEAR}, "
-                f"got {self.movie_year}"
-            )
 
         if self.disc_number is not None and self.disc_number < 1:
             errors.append(
@@ -139,8 +132,46 @@ class Config:  # pylint: disable=too-many-instance-attributes
         if errors:
             raise ConfigError("; ".join(errors))
 
+
+@dataclass(kw_only=True)
+class MovieConfig(BaseConfig):
+    """Configuration for a single movie pipeline run.
+
+    Extends ``BaseConfig`` with:
+
+    - ``movie_name`` — Movie title for Jellyfin naming (required).
+    - ``movie_year`` — Release year for Jellyfin naming (required).
+    """
+
+    movie_name: str
+    movie_year: int
+
+    def validate(self) -> None:
+        """Raise ``ConfigError`` if the movie configuration is invalid.
+
+        Runs all shared ``BaseConfig`` checks first, then checks:
+
+        - ``movie_name`` must not be blank.
+        - ``movie_year`` must be in the range 1888–2099.
+        """
+        super().validate()
+
+        errors: list[str] = []
+
+        if not self.movie_name.strip():
+            errors.append("movie_name must not be blank")
+
+        if not _MIN_YEAR <= self.movie_year <= _MAX_YEAR:
+            errors.append(
+                f"movie_year must be between {_MIN_YEAR} and {_MAX_YEAR}, "
+                f"got {self.movie_year}"
+            )
+
+        if errors:
+            raise ConfigError("; ".join(errors))
+
     @classmethod
-    def from_click_params(  # pylint: disable=too-many-arguments,too-many-positional-arguments
+    def from_click_params(  # pylint: disable=too-many-arguments,too-many-positional-arguments,duplicate-code
         cls,
         movie_name: str,
         movie_year: int,
@@ -150,11 +181,11 @@ class Config:  # pylint: disable=too-many-instance-attributes
         rip_mode: RipMode = "main",
         encode_format: EncodeFormat = "none",
         quality: Optional[int] = None,
-        min_length: int = 30,
+        min_length: int = 10,
         keep_original: bool = False,
         eject_on_complete: bool = True,
-    ) -> Config:
-        """Construct a ``Config`` from Click CLI parameter values.
+    ) -> MovieConfig:
+        """Construct a ``MovieConfig`` from Click CLI parameter values.
 
         Reads ``DISKRIPR_TEMP_DIR`` from the environment (handled in
         ``__post_init__``). All parameters map 1-to-1 to Click options of the
@@ -173,3 +204,50 @@ class Config:  # pylint: disable=too-many-instance-attributes
             keep_original=keep_original,
             eject_on_complete=eject_on_complete,
         )
+
+
+@dataclass(kw_only=True)
+class ShowConfig(BaseConfig):
+    """Configuration for a TV season pipeline run.
+
+    Extends ``BaseConfig`` with:
+
+    - ``show_name``      — Series title for Jellyfin naming (required).
+    - ``season_number``  — Season index (required); 0 maps to ``Season 00``
+                           (Jellyfin specials).
+    - ``start_episode``  — Episode number assigned to the first title on this
+                           disc (required); must be >= 1.
+    """
+
+    show_name: str
+    season_number: int
+    start_episode: int
+
+    def validate(self) -> None:
+        """Raise ``ConfigError`` if the show configuration is invalid.
+
+        Runs all shared ``BaseConfig`` checks first, then checks:
+
+        - ``show_name`` must not be blank.
+        - ``season_number`` must be >= 0.
+        - ``start_episode`` must be >= 1.
+        """
+        super().validate()
+
+        errors: list[str] = []
+
+        if not self.show_name.strip():
+            errors.append("show_name must not be blank")
+
+        if self.season_number < 0:
+            errors.append(
+                f"season_number must be >= 0, got {self.season_number}"
+            )
+
+        if self.start_episode < 1:
+            errors.append(
+                f"start_episode must be >= 1, got {self.start_episode}"
+            )
+
+        if errors:
+            raise ConfigError("; ".join(errors))

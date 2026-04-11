@@ -5,7 +5,9 @@ Covers:
 - ``Title.__post_init__`` guards: negative index, malformed duration, negative
   size_bytes / chapter_count.
 - ``Title.duration_seconds`` computed property for representative values.
+- ``Title`` optional MakeMKV segment fields (``segment_count``, ``segments_map``).
 - ``ClassifiedExtra`` and ``Selection`` construction.
+- ``EpisodeEntry`` and ``ShowSelection`` construction.
 - ``RipResult`` and ``EncodeResult`` optional field defaults.
 """
 
@@ -19,8 +21,10 @@ from diskripr.models import (
     DiscInfo,
     DriveInfo,
     EncodeResult,
+    EpisodeEntry,
     RipResult,
     Selection,
+    ShowSelection,
     StreamReport,
     SubtitleTrack,
     Title,
@@ -128,6 +132,33 @@ class TestTitleDurationSeconds:
 
 
 # ---------------------------------------------------------------------------
+# Title — optional MakeMKV segment fields
+# ---------------------------------------------------------------------------
+
+class TestTitleSegmentFields:
+    def test_segment_count_defaults_none(self, make_title):  # type: ignore[no-untyped-def]
+        title = make_title()
+        assert title.segment_count is None
+
+    def test_segments_map_defaults_none(self, make_title):  # type: ignore[no-untyped-def]
+        title = make_title()
+        assert title.segments_map is None
+
+    def test_segment_count_stored(self, make_title):  # type: ignore[no-untyped-def]
+        title = make_title(segment_count=4)
+        assert title.segment_count == 4
+
+    def test_segments_map_stored(self, make_title):  # type: ignore[no-untyped-def]
+        title = make_title(segments_map="0,1,2,3")
+        assert title.segments_map == "0,1,2,3"
+
+    def test_both_segment_fields_together(self, make_title):  # type: ignore[no-untyped-def]
+        title = make_title(segment_count=2, segments_map="0,1")
+        assert title.segment_count == 2
+        assert title.segments_map == "0,1"
+
+
+# ---------------------------------------------------------------------------
 # ClassifiedExtra
 # ---------------------------------------------------------------------------
 
@@ -164,6 +195,77 @@ class TestSelection:
         sel = Selection(main=main, extras=[classified])
         assert len(sel.extras) == 1
         assert sel.extras[0].extra_type == "featurette"
+
+
+# ---------------------------------------------------------------------------
+# EpisodeEntry
+# ---------------------------------------------------------------------------
+
+class TestEpisodeEntry:
+    def test_construction_with_title(self, make_title):  # type: ignore[no-untyped-def]
+        title = make_title(index=0, duration="00:42:00", title_type="main")
+        entry = EpisodeEntry(title=title, season_number=1, episode_number=3)
+        assert entry.title is title
+        assert entry.season_number == 1
+        assert entry.episode_number == 3
+        assert entry.episode_title is None
+
+    def test_episode_title_stored(self, make_title):  # type: ignore[no-untyped-def]
+        title = make_title(index=1, duration="00:42:00", title_type="main")
+        entry = EpisodeEntry(
+            title=title,
+            season_number=2,
+            episode_number=5,
+            episode_title="Pilot",
+        )
+        assert entry.episode_title == "Pilot"
+
+    def test_episode_title_defaults_none(self, make_title):  # type: ignore[no-untyped-def]
+        title = make_title(index=0, duration="00:42:00", title_type="main")
+        entry = EpisodeEntry(title=title, season_number=1, episode_number=1)
+        assert entry.episode_title is None
+
+
+# ---------------------------------------------------------------------------
+# ShowSelection
+# ---------------------------------------------------------------------------
+
+class TestShowSelection:
+    def test_empty_construction(self) -> None:
+        show_sel = ShowSelection()
+        assert show_sel.episodes == []
+        assert show_sel.extras == []
+
+    def test_construction_with_episodes(self, make_title):  # type: ignore[no-untyped-def]
+        title = make_title(index=0, duration="00:42:00", title_type="main")
+        entry = EpisodeEntry(title=title, season_number=1, episode_number=1)
+        show_sel = ShowSelection(episodes=[entry])
+        assert len(show_sel.episodes) == 1
+        assert show_sel.episodes[0] is entry
+
+    def test_construction_with_extras(self, make_title):  # type: ignore[no-untyped-def]
+        extra_title = make_title(index=1, duration="00:05:00", title_type="extra")
+        classified = ClassifiedExtra(
+            title=extra_title,
+            extra_type="behindthescenes",
+            output_filename="Behind the Scenes 1-behindthescenes.mkv",
+        )
+        show_sel = ShowSelection(extras=[classified])
+        assert len(show_sel.extras) == 1
+        assert show_sel.extras[0].extra_type == "behindthescenes"
+
+    def test_construction_with_episodes_and_extras(self, make_title):  # type: ignore[no-untyped-def]
+        ep_title = make_title(index=0, duration="00:42:00", title_type="main")
+        extra_title = make_title(index=1, duration="00:05:00", title_type="extra")
+        entry = EpisodeEntry(title=ep_title, season_number=1, episode_number=1)
+        classified = ClassifiedExtra(
+            title=extra_title,
+            extra_type="featurette",
+            output_filename="Featurette 1-featurette.mkv",
+        )
+        show_sel = ShowSelection(episodes=[entry], extras=[classified])
+        assert len(show_sel.episodes) == 1
+        assert len(show_sel.extras) == 1
 
 
 # ---------------------------------------------------------------------------

@@ -8,8 +8,10 @@ Tests for ``read_disc`` mock ``is_available`` and ``run`` to avoid requiring
 a physical drive or the lsdvd binary.
 
 Fixture files used:
-- ``tests/data/lsdvd/disc_normal.txt``  — real lsdvd output; 2 titles.
+- ``tests/data/lsdvd/disc_normal.txt``  — real lsdvd output; 2 titles on VTS 1 and 2.
 - ``tests/data/lsdvd/disc_encrypted.txt`` — lsdvd error output; no disc title.
+- ``tests/data/lsdvd/multi_vts.txt``    — 3 titles; extras on VTS 2.
+- ``tests/data/lsdvd/shared_vts.txt``   — 4 titles sharing VTS 2 for titles 2–4.
 """
 
 from __future__ import annotations
@@ -53,6 +55,10 @@ class TestParseNormalDisc:
         main_title = result.titles[0]
         assert main_title.index == 1
         assert main_title.duration == "01:57:30"
+        assert main_title.vts_number == 1
+        assert main_title.ttn == 1
+        assert main_title.audio_stream_count == 3
+        assert main_title.cell_count == 13
 
     def test_short_title(self) -> None:
         text = load_fixture("lsdvd", "disc_normal.txt")
@@ -61,6 +67,17 @@ class TestParseNormalDisc:
         short_title = result.titles[1]
         assert short_title.index == 2
         assert short_title.duration == "00:00:32"
+        assert short_title.vts_number == 2
+        assert short_title.ttn == 1
+        assert short_title.audio_stream_count == 1
+        assert short_title.cell_count == 1
+
+    def test_main_vts_from_longest_track(self) -> None:
+        text = load_fixture("lsdvd", "disc_normal.txt")
+        result = LsdvdDriver._parse(text)
+        assert result is not None
+        # Longest track: 01, which is on VTS 01.
+        assert result.main_vts == 1
 
 
 # ---------------------------------------------------------------------------
@@ -98,7 +115,10 @@ class TestParseEdgeCases:
     def test_single_digit_hour_normalised(self) -> None:
         result = LsdvdDriver._parse(self._SINGLE_DIGIT_HOUR_OUTPUT)
         assert result is not None
-        assert result.titles[0].duration == "02:11:37"
+        title = result.titles[0]
+        assert title.duration == "02:11:37"
+        assert title.audio_stream_count == 1
+        assert title.cell_count == 5
 
     def test_disc_title_only_no_titles(self) -> None:
         text = "Disc Title: EMPTY_DISC\n"
@@ -106,6 +126,19 @@ class TestParseEdgeCases:
         assert result is not None
         assert result.disc_title == "EMPTY_DISC"
         assert result.titles == []
+        assert result.main_vts is None
+
+    def test_main_vts_none_when_longest_track_absent(self) -> None:
+        text = (
+            "Disc Title: NO_LONGEST\n"
+            "Title: 01, Length: 01:00:00.000 Chapters: 10, Cells: 10, "
+            "Audio streams: 02, Subpictures: 00\n"
+            "\tVTS: 01, TTN: 01, FPS: 29.97, Format: NTSC, Aspect ratio: 16/9, "
+            "Width: 720, Height: 480, DF: Letterbox\n"
+        )
+        result = LsdvdDriver._parse(text)
+        assert result is not None
+        assert result.main_vts is None
 
     def test_unparseable_title_line_is_skipped(self) -> None:
         text = (
@@ -124,6 +157,90 @@ class TestParseEdgeCases:
         result = LsdvdDriver._parse(text)
         assert result is not None
         assert result.disc_title == "SPACED_DISC"
+
+
+# ---------------------------------------------------------------------------
+# _parse() — multi_vts fixture (extras on VTS 2)
+# ---------------------------------------------------------------------------
+
+class TestParseMultiVts:
+    def test_three_titles_parsed(self) -> None:
+        text = load_fixture("lsdvd", "multi_vts.txt")
+        result = LsdvdDriver._parse(text)
+        assert result is not None
+        assert len(result.titles) == 3
+
+    def test_main_title_on_vts_1(self) -> None:
+        text = load_fixture("lsdvd", "multi_vts.txt")
+        result = LsdvdDriver._parse(text)
+        assert result is not None
+        assert result.titles[0].vts_number == 1
+        assert result.titles[0].ttn == 1
+
+    def test_extras_on_vts_2(self) -> None:
+        text = load_fixture("lsdvd", "multi_vts.txt")
+        result = LsdvdDriver._parse(text)
+        assert result is not None
+        assert result.titles[1].vts_number == 2
+        assert result.titles[1].ttn == 1
+        assert result.titles[2].vts_number == 2
+        assert result.titles[2].ttn == 2
+
+    def test_main_vts_is_1(self) -> None:
+        text = load_fixture("lsdvd", "multi_vts.txt")
+        result = LsdvdDriver._parse(text)
+        assert result is not None
+        assert result.main_vts == 1
+
+    def test_audio_and_cell_counts(self) -> None:
+        text = load_fixture("lsdvd", "multi_vts.txt")
+        result = LsdvdDriver._parse(text)
+        assert result is not None
+        assert result.titles[0].audio_stream_count == 2
+        assert result.titles[0].cell_count == 15
+        assert result.titles[1].audio_stream_count == 1
+        assert result.titles[1].cell_count == 3
+
+
+# ---------------------------------------------------------------------------
+# _parse() — shared_vts fixture (titles 2–4 share VTS 2)
+# ---------------------------------------------------------------------------
+
+class TestParseSharedVts:
+    def test_four_titles_parsed(self) -> None:
+        text = load_fixture("lsdvd", "shared_vts.txt")
+        result = LsdvdDriver._parse(text)
+        assert result is not None
+        assert len(result.titles) == 4
+
+    def test_title_1_on_vts_1(self) -> None:
+        text = load_fixture("lsdvd", "shared_vts.txt")
+        result = LsdvdDriver._parse(text)
+        assert result is not None
+        assert result.titles[0].vts_number == 1
+
+    def test_titles_2_through_4_share_vts_2(self) -> None:
+        text = load_fixture("lsdvd", "shared_vts.txt")
+        result = LsdvdDriver._parse(text)
+        assert result is not None
+        assert result.titles[1].vts_number == 2
+        assert result.titles[1].ttn == 1
+        assert result.titles[2].vts_number == 2
+        assert result.titles[2].ttn == 2
+        assert result.titles[3].vts_number == 2
+        assert result.titles[3].ttn == 3
+
+    def test_main_vts_is_1(self) -> None:
+        text = load_fixture("lsdvd", "shared_vts.txt")
+        result = LsdvdDriver._parse(text)
+        assert result is not None
+        assert result.main_vts == 1
+
+    def test_disc_title(self) -> None:
+        text = load_fixture("lsdvd", "shared_vts.txt")
+        result = LsdvdDriver._parse(text)
+        assert result is not None
+        assert result.disc_title == "SHARED_VTS_DISC"
 
 
 # ---------------------------------------------------------------------------

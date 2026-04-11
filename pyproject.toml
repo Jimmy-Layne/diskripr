@@ -7,7 +7,7 @@ name = "diskripr"
 version = "0.1.3"
 description = "DVD ripping CLI for producing Jellyfin-compatible MKV files"
 requires-python = ">=3.11"
-dependencies = ["click"]
+dependencies = ["click", "pyparsedvd==0.0.3", "pydantic>=2.0"]
 
 [project.scripts]
 diskripr = "diskripr.cli:main"
