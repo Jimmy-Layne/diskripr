@@ -10,3 +10,4 @@ API Reference
    pipeline
    drivers
    util
+   queue

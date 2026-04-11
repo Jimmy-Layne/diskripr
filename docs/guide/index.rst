@@ -6,3 +6,4 @@ User Guide
 
    installation
    getting-started
+   batch-ripping

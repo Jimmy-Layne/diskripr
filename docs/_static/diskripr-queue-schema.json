@@ -1,0 +1,334 @@
+{
+  "$defs": {
+    "JobOptions": {
+      "description": "Per-job encoding and device options \u2014 every field is optional.\n\nWhen a field is omitted, the effective value is resolved from the\n``diskripr queue run`` command-line flag, or the built-in default if\nno flag was supplied.",
+      "properties": {
+        "device": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Block device path (e.g. '/dev/sr0').",
+          "title": "Device"
+        },
+        "output_dir": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Absolute path to the output root directory.",
+          "title": "Output Dir"
+        },
+        "temp_dir": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Temporary working directory; null uses system temp.",
+          "title": "Temp Dir"
+        },
+        "disc_number": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Disc index within a multi-disc title (1-based). Null or omitted for single-disc titles.",
+          "title": "Disc Number"
+        },
+        "rip_mode": {
+          "anyOf": [
+            {
+              "enum": [
+                "main",
+                "all",
+                "ask"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Title selection mode: 'main', 'all', or 'ask'.",
+          "title": "Rip Mode"
+        },
+        "encode_format": {
+          "anyOf": [
+            {
+              "enum": [
+                "h264",
+                "h265",
+                "none",
+                "ask"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Encoding format: 'h264', 'h265', 'none', or 'ask'.",
+          "title": "Encode Format"
+        },
+        "quality": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "HandBrake CRF value; null uses the format default.",
+          "title": "Quality"
+        },
+        "min_length": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Minimum title length in seconds.",
+          "title": "Min Length"
+        },
+        "keep_original": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Retain raw MKV files after encoding.",
+          "title": "Keep Original"
+        },
+        "eject_on_complete": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Eject the disc when the job finishes.",
+          "title": "Eject On Complete"
+        }
+      },
+      "title": "JobOptions",
+      "type": "object"
+    },
+    "MovieJob": {
+      "description": "A single movie rip job.",
+      "properties": {
+        "type": {
+          "const": "movie",
+          "description": "Discriminator field \u2014 must be 'movie' for movie jobs.",
+          "title": "Type",
+          "type": "string"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Client-assigned idempotency key; UUID v4 recommended. Logged alongside job status.",
+          "title": "Id"
+        },
+        "movie": {
+          "$ref": "#/$defs/MovieMeta",
+          "description": "Movie-specific metadata (name, year)."
+        },
+        "options": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/JobOptions"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Rip options; any omitted field falls back to the CLI default or the value supplied on the queue run command line."
+        }
+      },
+      "required": [
+        "type",
+        "movie"
+      ],
+      "title": "MovieJob",
+      "type": "object"
+    },
+    "MovieMeta": {
+      "description": "Required movie metadata for a movie rip job.",
+      "properties": {
+        "name": {
+          "description": "Movie title as it should appear in the Jellyfin library.",
+          "title": "Name",
+          "type": "string"
+        },
+        "year": {
+          "description": "Release year (1888\u20132100); used in directory naming.",
+          "maximum": 2100,
+          "minimum": 1888,
+          "title": "Year",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "name",
+        "year"
+      ],
+      "title": "MovieMeta",
+      "type": "object"
+    },
+    "ShowJob": {
+      "description": "A single TV-season rip job.",
+      "properties": {
+        "type": {
+          "const": "show",
+          "description": "Discriminator field \u2014 must be 'show' for show jobs.",
+          "title": "Type",
+          "type": "string"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Client-assigned idempotency key; UUID v4 recommended. Logged alongside job status.",
+          "title": "Id"
+        },
+        "show": {
+          "$ref": "#/$defs/ShowMeta",
+          "description": "Show-specific metadata (name, season, start_episode)."
+        },
+        "options": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/JobOptions"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Rip options; any omitted field falls back to the CLI default or the value supplied on the queue run command line."
+        }
+      },
+      "required": [
+        "type",
+        "show"
+      ],
+      "title": "ShowJob",
+      "type": "object"
+    },
+    "ShowMeta": {
+      "description": "Required show metadata for a TV-season rip job.",
+      "properties": {
+        "name": {
+          "description": "Series title as it should appear in the Jellyfin library.",
+          "title": "Name",
+          "type": "string"
+        },
+        "season": {
+          "description": "Season number >= 0; 0 maps to Jellyfin 'Specials'.",
+          "minimum": 0,
+          "title": "Season",
+          "type": "integer"
+        },
+        "start_episode": {
+          "description": "Episode number of the first title on this disc; >= 1.",
+          "minimum": 1,
+          "title": "Start Episode",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "name",
+        "season",
+        "start_episode"
+      ],
+      "title": "ShowMeta",
+      "type": "object"
+    }
+  },
+  "description": "Top-level job file envelope.\n\nA job file is a UTF-8 JSON document with a schema version and an ordered\narray of job objects processed sequentially by the queue runner.",
+  "properties": {
+    "version": {
+      "const": "1.0",
+      "description": "Schema version; must be '1.0' for this release.",
+      "title": "Version",
+      "type": "string"
+    },
+    "jobs": {
+      "description": "Ordered list of job objects; processed sequentially.",
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "movie": "#/$defs/MovieJob",
+            "show": "#/$defs/ShowJob"
+          },
+          "propertyName": "type"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/MovieJob"
+          },
+          {
+            "$ref": "#/$defs/ShowJob"
+          }
+        ]
+      },
+      "title": "Jobs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "version",
+    "jobs"
+  ],
+  "title": "JobFile",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

@@ -6,3 +6,6 @@ Concepts
 
    pipeline
    drivers
+   jellyfin_naming
+   heuristics
+   queue
